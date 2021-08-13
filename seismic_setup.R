@@ -3,7 +3,7 @@
 #import SEISMIC-formatted data
 
 #set your working directory (the folder where your data is currently stored and where exports will be saved)
-setwd <- c("~/Documents/projects/dber_seismic/")
+setwd("~/Documents/projects/dber_seismic/test_code/")
 
 #select your SEISMIC-formatted data file (.csv)
 dat <- read.csv("~/Documents/projects/dber_seismic/UCD_CBS_upper_division_SEISMIC-format_2021-08-06.csv", 
@@ -27,7 +27,7 @@ upper_ci <- function(mean, se, n, conf_level = 0.95){
 }
 
 # RUN ALL SCRIPTS
-source(seismic_data_filtering.R)
-source(seismic_gaps_over_time.R)
-source(seismic_advantages_groups.R)
-source(seismic_model_outputs.R)
+source("seismic_data_filtering.R")
+source("seismic_gaps_over_time.R")
+source("seismic_advantages_groups.R")
+source("seismic_model_outputs.R")
