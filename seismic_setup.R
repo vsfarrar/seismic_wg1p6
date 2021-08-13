@@ -25,3 +25,9 @@ lower_ci <- function(mean, se, n, conf_level = 0.95){
 upper_ci <- function(mean, se, n, conf_level = 0.95){
   upper_ci <- mean + qt(1 - ((1 - conf_level) / 2), n - 1) * se
 }
+
+# RUN ALL SCRIPTS
+source(seismic_data_filtering.R)
+source(seismic_gaps_over_time.R)
+source(seismic_advantages_groups.R)
+source(seismic_model_outputs.R)
