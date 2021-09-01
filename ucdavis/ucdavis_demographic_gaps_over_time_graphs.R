@@ -1,6 +1,10 @@
 #GAPS OVER TIME GRAPHS 
 
 #requires seismic setup, filtering and gaps over time to be already run
+setwd("/Users/vsfarrar/Documents/GitHub/seismic_wg1p6")
+source("seismic_setup.R")
+source("seismic_data_filtering.R")
+source("seismic_gaps_over_time.R")
 
 #create group indicies for terms 
 demog_gaps_by_term$term_no <- demog_gaps_by_term %>% group_by(crs_term) %>% group_indices()
@@ -22,8 +26,6 @@ demog_gaps_by_year_no_summers %>%
   scale_shape_discrete(labels = c("M","W")) +
   theme_classic(base_size = 14) +
   theme(axis.text.x = element_text(size = 10,angle = 90))
-
-
 
 #ISSUE: can you functionize these plots?
 #ISSUE: if I wanted to look at trends across years, 
