@@ -3,8 +3,6 @@
 #requires seismic setup, filtering and gaps over time to be already run
 setwd("/Users/vsfarrar/Documents/GitHub/seismic_wg1p6")
 source("seismic_setup.R")
-source("seismic_data_filtering.R")
-source("seismic_gaps_over_time.R")
 
 #create group indicies for terms 
 demog_gaps_by_term$term_no <- demog_gaps_by_term %>% group_by(crs_term) %>% group_indices()
