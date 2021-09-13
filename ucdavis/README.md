@@ -6,6 +6,11 @@ Analyses of UC Davis upper division core biology and chemistry courses are house
 * `UCD_CBS_upper_division_SEISMIC-format.csv` : SEISMIC-formatted UC Davis upper division data. 
 
   This processed dataset is created using `upper-div_dataset_prep_for_SEISMIC.R`
+  
+  Housed in [shared Google Drive (SEISMIC WG1P6)](https://drive.google.com/drive/u/0/folders/1wL754oX9MwZJPNGzwTz22TyNI33U9k8k) *(access permissions required)* 
+  
+### Raw / original Data from CEE 
+* [SEISMIC Fellow Data | Box](https://ucdavis.app.box.com/folder/142186624193) *(access permissions required)* 
 
 ## Code / Analyses 
 `upper-div_dataset_prep_for_SEISMIC.R` converts raw upper-division data from UCD CEE to SEISMIC format for running models, SEISMIC-formatted code. 
