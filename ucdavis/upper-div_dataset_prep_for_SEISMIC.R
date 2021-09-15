@@ -1,5 +1,5 @@
 #load data
-dat <- read.csv("~/Documents/projects/dber_seismic/UCD_CBS_upper_division_2021-07.csv", na.strings=c("","NA"))
+dat <- read.csv("~/Documents/projects/dber_seismic/data/UCD_CBS_upper_division_NPB_2021-09-07.csv", na.strings=c("","NA"))
 
 #load packages
 library(tidyverse)
@@ -71,8 +71,12 @@ dat %>%
   #recode gender and transfer to numeric
   mutate(female = recode(gender, "M" = 0, "F" = 1, "N" = 2),
          transfer = recode(admit_level, "Transfer" = 1, "Freshman" = 0)) %>% 
+  #combine multiple grad majors into one entry
   mutate(grad_major = ifelse(is.na(major_2_bfr_first_degree), major_1_bfr_first_degree, 
                              paste(major_1_bfr_first_degree, major_2_bfr_first_degree, sep = "/"))) %>%
+  #list crs_components 
+  mutate(crs_component = ifelse(subjcrs %in% c("NPB101L", "NPB100L"), "lab", "lec")) %>%
+  mutate(crs_component = ifelse(subjcrs == "NPB101D", "si", crs_component)) %>%
 rename(st_id = CEEID,
        firstgen = first_generation,
        lowincomeflag = low_income,
@@ -99,10 +103,10 @@ dat_seismic_minimum <-
     st_id, female, firstgen, ethnicode, ethnicode_cat, urm, lowincomeflag,transfer,international,cohort,
     begin_term_cum_gpa, grad_gpa, grad_major, grad_term, time_to_grad, 
     #course variables
-    crs_name, is_stem, crs_term,crs_retake, lettergrade, numgrade, is_dfw,gpao, cum_prior_gpa, prior_units)
+    crs_name, is_stem, crs_term, crs_component, crs_retake, lettergrade, numgrade, is_dfw,gpao, cum_prior_gpa, prior_units)
          
 #save dataset 
-write.csv(dat_seismic_minimum, file =paste0("~/Documents/projects/dber_seismic/UCD_CBS_upper_division_SEISMIC-format_", current_date,".csv"))
+#write.csv(dat_seismic_minimum,file =paste0("~/Documents/projects/dber_seismic/UCD_CBS_upper_division_SEISMIC-format_NPB_", current_date,".csv"))
 
 # REFERENCES ####
 #UC Davis Grade Notation 
