@@ -20,7 +20,13 @@ left_join(., term_map, by = c("cohort" = "term")) %>%
 rename(qno_admit = rowid) %>%
 left_join(., term_map, by = c("crs_term" = "term")) %>%
 rename(qno_crsterm = rowid) %>%
-mutate(terms_since_admit = qno_crsterm - qno_admit) 
+mutate(terms_since_admit = qno_crsterm - qno_admit) %>%
+  mutate(year_since_admit = case_when(
+    between(terms_since_admit,0,3)  ~ "1",
+    between(terms_since_admit,4,7)  ~ "2",
+    between(terms_since_admit,8,11) ~ "3",
+    TRUE ~ "4+"
+  )) #this code doesn't work
 
 
 updiv %>%
