@@ -1,8 +1,6 @@
-updiv <- read.csv("~/Documents/projects/dber_seismic/UCD_CBS_upper_division_SEISMIC-format_2021-08-06.csv", 
-                na.strings=c("","NA"))
 
 #filter data first 
-updiv <- dat %>%
+dat19 <- dat %>%
   add_count(crs_name, crs_term, name = "n_term") %>%
   mutate(summer_term = ifelse(str_sub(crs_term, 5,6) %in% c("05","06","07"),1,0)) %>%
   filter(n_term >= 50 & summer_term == 0 ) %>%
@@ -12,7 +10,7 @@ updiv <- dat %>%
 #T-tests by demographic variables ####
 
 ttest_avggrade_gender <-
-  updiv %>%
+  dat19 %>%
   filter(!is.na(female) & female != 2 & crs_name != "NPB101D") %>%
   group_by(crs_name) %>%
   summarise(ttest = list(t.test(numgrade ~ female))) %>%
@@ -23,32 +21,32 @@ ttest_avggrade_gender <-
   mutate(significant = ifelse(p.value <= 0.05, 1,0))
 
 ttest_avggrade_urm <-
-  updiv %>%
+  dat19 %>%
   mutate(urm = ifelse(ethnicode_cat %in% c(1,3), 1,0)) %>%
   filter(!is.na(urm) & crs_name != "NPB101D") %>%
   group_by(crs_name) %>%
   summarise(ttest = list(t.test(numgrade ~ urm))) %>%
   mutate(ttest = map(ttest, broom::tidy)) %>%
-  unnest() %>%
+  unnest(cols = c(ttest)) %>%
   #clean up table
   select(crs_name,t.value = statistic, p.value) %>%
   mutate(significant = ifelse(p.value <= 0.05, 1,0))
 
 
 ttest_avggrade_fg <-
-  updiv %>%
+  dat19 %>%
   filter(!is.na(firstgen) & crs_name != "NPB101D") %>%
   group_by(crs_name) %>%
   summarise(ttest = list(t.test(numgrade ~ firstgen))) %>%
   mutate(ttest = map(ttest, broom::tidy)) %>%
-  unnest() %>%
+  unnest(cols = c(ttest)) %>%
   #clean up table
   select(crs_name,t.value = statistic, p.value) %>%
   mutate(significant = ifelse(p.value <= 0.05, 1,0))
 
 
 ttest_avggrade_transfer <-
-  updiv %>%
+  dat19 %>%
   filter(!is.na(transfer) & crs_name != "NPB101D") %>%
   group_by(crs_name) %>%
   summarise(ttest = list(t.test(numgrade ~ transfer))) %>%
@@ -61,67 +59,71 @@ ttest_avggrade_transfer <-
 # Average Plots ####
 
 #URM gaps 
-updiv %>%
-  mutate(urm = ifelse(ethnicode_cat %in% c(1,3), 1,0)) %>%
+dat19 %>%
   group_by(crs_name, urm) %>%
   summarise(avg_grade = mean(numgrade, na.rm = T), 
-            avg_prior_gpa = mean(cum_prior_gpa, na.rm = T)) %>%
-  pivot_wider(names_from = urm, values_from = c(avg_grade, avg_prior_gpa)) %>%
+            avg_gpao = mean(gpao, na.rm = T)) %>%
+  pivot_wider(names_from = urm, values_from = c(avg_grade, avg_gpao)) %>%
   mutate(grade_diff = avg_grade_0 - avg_grade_1,
-         gpa_diff = avg_prior_gpa_0 - avg_prior_gpa_1) %>%
+         gpa_diff = avg_gpao_0 - avg_gpao_1) %>%
   mutate(dept = str_sub(crs_name, 1,3)) %>%
   left_join(., ttest_avggrade_urm, by = "crs_name") %>%
   ggplot(aes(x = gpa_diff, y= grade_diff, color = dept)) + 
-  geom_point(aes(shape = as.factor(significant)))+ 
-  geom_text(aes(label = crs_name),hjust = -0.1) + 
+  geom_point(aes(shape = as.factor(significant)), size = 3)+ 
+  #geom_text(aes(label = crs_name),hjust = -0.1) + 
   geom_hline(yintercept = 0) + 
   geom_vline(xintercept = 0) + 
-  labs(x = "Prior GPA Difference (nonURM-URM)", y = "Course Grade Difference (nonURM-URM)",
+  scale_shape_manual(values=c(1,16)) +
+  labs(x = "GPAO Difference (nonURM-URM)", y = "Course Grade Difference \n(nonURM-URM)",
        color = "Department", shape = "Grade diff. significant?") + 
-  theme_classic(base_size =14)
+  theme_classic(base_size =14) + 
+  theme(legend.position = "bottom")
 
-
-updiv %>%
+#Gender
+dat19 %>%
   filter(!is.na(female)) %>%
   filter(female != 2) %>%
   group_by(crs_name, female) %>%
   summarise(avg_grade = mean(numgrade, na.rm = T), 
-            avg_prior_gpa = mean(cum_prior_gpa, na.rm = T)) %>%
-  pivot_wider(names_from = female, values_from = c(avg_grade, avg_prior_gpa)) %>%
+            avg_gpao = mean(gpao, na.rm = T)) %>%
+  pivot_wider(names_from = female, values_from = c(avg_grade, avg_gpao)) %>%
   mutate(grade_diff = avg_grade_0 - avg_grade_1,
-         gpa_diff = avg_prior_gpa_0 - avg_prior_gpa_1) %>%
+         gpa_diff = avg_gpao_0 - avg_gpao_1) %>%
   mutate(dept = str_sub(crs_name, 1,3)) %>%
   left_join(., ttest_avggrade_gender, by = "crs_name") %>%
   ggplot(aes(x = gpa_diff, y= grade_diff, color = dept)) + 
-  geom_point(aes(shape = as.factor(significant)))+ 
-  geom_text(aes(label = crs_name),hjust = -0.1) + 
+  geom_point(aes(shape = as.factor(significant)), size = 3)+ 
+  #geom_text(aes(label = crs_name),hjust = -0.1) + 
   geom_hline(yintercept = 0) + 
   geom_vline(xintercept = 0) + 
-  labs(x = "Prior GPA Difference (M-W)", y = "Course Grade Difference (M-W)",
+  scale_shape_manual(values=c(1,16)) +
+  labs(x = "GPAO Difference (M-W)", y = "Course Grade Difference (M-W)",
        color = "Department", shape = "Grade diff. significant?") + 
-  theme_classic(base_size =14)
+  theme_classic(base_size =14) +
+  theme(legend.position = "none")
+
+
 
 #FIRST GEN
-
-updiv %>%
-  filter(!is.na(firstgen)) %>%
+dat19 %>%
   group_by(crs_name, firstgen) %>%
   summarise(avg_grade = mean(numgrade, na.rm = T), 
-            avg_prior_gpa = mean(cum_prior_gpa, na.rm = T)) %>%
-  pivot_wider(names_from = firstgen, values_from = c(avg_grade, avg_prior_gpa)) %>%
+            avg_gpao = mean(gpao, na.rm = T)) %>%
+  pivot_wider(names_from = firstgen, values_from = c(avg_grade, avg_gpao)) %>%
   mutate(grade_diff = avg_grade_0 - avg_grade_1,
-         gpa_diff = avg_prior_gpa_0 - avg_prior_gpa_1) %>%
+         gpa_diff = avg_gpao_0 - avg_gpao_1) %>%
   mutate(dept = str_sub(crs_name, 1,3)) %>%
   left_join(., ttest_avggrade_fg, by = "crs_name") %>%
   ggplot(aes(x = gpa_diff, y= grade_diff, color = dept)) + 
-  geom_point(aes(shape = as.factor(significant)))+ 
-  geom_text(aes(label = crs_name),hjust = -0.1) + 
+  geom_point(aes(shape = as.factor(significant)), size = 3)+ 
+  #geom_text(aes(label = crs_name),hjust = -0.1) + 
   geom_hline(yintercept = 0) + 
   geom_vline(xintercept = 0) + 
-  labs(x = "Prior GPA Difference (CG-FG)", y = "Course Grade Difference (CG-FG)",
-       color = "Department", shape = "Grade diff. significant?") + 
-  theme_classic(base_size =14)
-
+  scale_shape_manual(values=c(1,16)) +
+  labs(x = "GPAO Difference (CG-FG)", y = "Course Grade Difference (CG-FG)",
+       color = "Department", shape = "Grade diff. significant?")  + 
+  theme_classic(base_size =14) + 
+  theme(legend.position = "none")
 
 #TRANSFER
 updiv %>%
