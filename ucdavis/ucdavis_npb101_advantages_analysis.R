@@ -45,8 +45,8 @@ dat19 <- left_join(dat19, npb101d) #default joins by st_id AND crs_term
 dat_covid <-left_join(dat_covid, npb101d_covid)
 
 # Calculate "Advantages" ####
-advantages_npb101d_covid <- 
-  dat_covid %>%
+advantages_npb101d <- 
+  dat19 %>%
   filter(crs_name == "NPB101" & crs_term >= 201610) %>%
   mutate(advantage = case_when(
     female == "0" & urm == "0" & firstgen == "0" & lowincomeflag == "0"  ~ "0",
@@ -108,24 +108,26 @@ advantages_npb101d %>%
   geom_errorbar(aes(ymin = mean_grade - se_grade, ymax = mean_grade + se_grade), width = 0.7,
                 position = position_dodge(0.2)) + 
   geom_vline(xintercept = c(2.5, 5.5,11.5,15.5)) + 
-  labs(x = "No. of 'Advantages'", y = "Average Course Grade (NPB 101)", 
+  labs(x = NULL, y = "Average Course Grade \n(NPB 101)", 
        color = "Enrolled in NPB101D?", subtitle = "Fall 2016 - Fall 2019") + 
   theme_classic(base_size = 14) + 
   theme(legend.position = "bottom") + 
   coord_flip()
 
 #averages, normalized to the "all advantages" group
-advantages_npb101d%>%
+advantages_npb101d %>%
 ungroup() %>%
 filter(!is.na(disadv_no)) %>%
-  mutate(mean_grade_norm = ifelse(enrolled_npb101d == 0, mean_grade-2.849176,mean_grade-3.051852), 
-          #issue: need to code this dynamically, rather than hard coding
-         group_label = fct_reorder(as.factor(group_label), advantage, min)) %>% 
+group_by(enrolled_npb101d) %>%
+mutate(norm_mean_grade = mean_grade- mean_grade[advantage =="0"]) %>%
+  ungroup() %>%
+mutate(group_label = fct_reorder(as.factor(group_label), advantage, min)) %>% 
   #Plot
-  ggplot(aes(x = group_label, y = mean_grade_norm, color = as.factor(enrolled_npb101d))) + 
+  ggplot(aes(x = group_label, y = norm_mean_grade, color = as.factor(enrolled_npb101d))) + 
   geom_point(position = position_dodge(0.2)) + 
-  geom_errorbar(aes(ymin = mean_grade_norm - se_grade, ymax = mean_grade_norm + se_grade), width = 0.7,
-                position = position_dodge(0.2)) + 
+  geom_errorbar(aes(ymin = norm_mean_grade - se_grade, 
+                    ymax = norm_mean_grade + se_grade), 
+                width = 0.7,position = position_dodge(0.2)) + 
   geom_vline(xintercept = c(2.5, 5.5,11.5,15.5)) + 
   labs(x = "No. of 'Advantages'", y = "Average Course Grade \n(relative to most advantaged group)", 
        color = "Enrolled in NPB101D?") + 
@@ -166,3 +168,56 @@ advantages_npb101d_covid %>%
   theme_classic(base_size = 14) + 
   theme(legend.position = "bottom") + 
   coord_flip()
+
+# Sample Size Table ####
+
+npb101_adv_covid <-
+dat_covid %>%
+  filter(crs_name == "NPB101") %>%
+  mutate(advantage = case_when(
+    female == "0" & urm == "0" & firstgen == "0" & lowincomeflag == "0"  ~ "0",
+    female == "1" & urm == "0" & firstgen == "0" & lowincomeflag == "0"  ~ "1A",
+    female == "0" & urm == "1" & firstgen == "0" & lowincomeflag == "0"  ~ "1B", 
+    female == "0" & urm == "0" & firstgen == "0" & lowincomeflag == "1"  ~ "1C", 
+    female == "0" & urm == "0" & firstgen == "1" & lowincomeflag == "0"  ~ "1D", 
+    female == "0" & urm == "1" & firstgen == "1" & lowincomeflag == "0"  ~ "2A", 
+    female == "0" & urm == "1" & firstgen == "0" & lowincomeflag == "1"  ~ "2B", 
+    female == "1" & urm == "1" & firstgen == "0" & lowincomeflag == "0"  ~ "2C", 
+    female == "0" & urm == "0" & firstgen == "1" & lowincomeflag == "1"  ~ "2D", 
+    female == "1" & urm == "0" & firstgen == "1" & lowincomeflag == "0"  ~ "2E", 
+    female == "1" & urm == "0" & firstgen == "0" & lowincomeflag == "1"  ~ "2F", 
+    female == "1" & urm == "0" & firstgen == "1" & lowincomeflag == "1"  ~ "3A", 
+    female == "1" & urm == "1" & firstgen == "1" & lowincomeflag == "0"  ~ "3B",
+    female == "1" & urm == "1" & firstgen == "0" & lowincomeflag == "1"  ~ "3C", 
+    female == "0" & urm == "1" & firstgen == "1" & lowincomeflag == "1"  ~ "3D",
+    female == "1" & urm == "1" & firstgen == "1" & lowincomeflag == "1"  ~ "4",
+    TRUE ~ "NA")) %>%
+  mutate(enrolled_npb101d = replace_na(enrolled_npb101d,0 )) %>%
+  mutate(group_label = recode(advantage, 
+                              "0" ="non-URM,non-LI,non-FG man",
+                              "1A" = "+W",
+                              "3D" = "+URM+FG+LI",
+                              "4" = "+URM+FG+LI+W",
+                              "1B" = "+URM",
+                              "2C" ="+URM+W",
+                              "1D" ="+FG", 
+                              "2E" = "+FG+W",
+                              "1C" = "+LI",
+                              "2F" = "+LI+W",
+                              "2A"="+URM+FG",
+                              "3B"="+URM+FG+W",
+                              "2B"="+URM+LI",
+                              "3C"= "+URM+LI+W",
+                              "2D" = "+FG+LI",
+                              "3A" = "+FG+LI+W"))
+
+#create sample size table 
+
+npb101_adv_covid %>%
+  mutate(group_label = fct_reorder(as.factor(group_label), advantage, min)) %>%
+  group_by(group_label, enrolled_npb101d) %>%
+  summarise(n = n()) %>%
+  pivot_wider(names_from = enrolled_npb101d, values_from = n) %>%
+  arrange(desc(group_label)) %>%
+  tab_df()
+
