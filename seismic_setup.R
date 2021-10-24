@@ -2,11 +2,13 @@
 ################################
 #import SEISMIC-formatted data
 
-#set your working directory (the folder where your data is currently stored and where exports will be saved)
+#set your working directory 
+#(the folder where your data is currently stored and where exports will be saved)
 setwd("~/Documents/projects/dber_seismic/test_code/")
 
-#select your SEISMIC-formatted data file (.csv)
-dat <- read.csv("~/Documents/projects/dber_seismic/UCD_CBS_upper_division_SEISMIC-format_2021-08-06.csv", 
+#select your SEISMIC-formatted data file (.csv) 
+#please call this file "dat" for downstream scripts to work
+dat <- read.csv("~/Documents/projects/dber_seismic/UCD_CBS_upper_division_SEISMIC-format_NPB_full_2021-09-13.csv", 
                 na.strings=c("","NA"))
 
 ################################
