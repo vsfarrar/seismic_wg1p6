@@ -13,26 +13,59 @@
  
 ##  Dataset Preparation 
  
- Before running the code, ensure your data is formatted in the described SEISMIC format. Please reference this [data description]() for the correct variable names and 
+ Before running the code, ensure your data is formatted in the described SEISMIC format. Please reference this data dictionary for the correct variable names and minimum variables required: 
  
-Course-level variables and student-level variables should be included in the same data table. Course-level variables should be present as separate columns. For instance, if students took multiple courses at an institution, there should be one row per student:course combination. Students that retook courses should thus have multiple rows for a single student:course combination that differ by term and grade. Student-level demographic data should be consistent across each student's rows. Note that this formatting differs from that of WG1P1, where there are separate tables for course- and student-level variables. 
+[DataDescription_ SEISMIC_ WG1P6-modifications.xlsx](https://docs.google.com/spreadsheets/d/1XcpZ3gNCmca7ECmhbUus-73b1mIsPE4w/edit?usp=sharing&ouid=101003818724972958035&rtpof=true&sd=true) (Google Drive link; open access) 
+ 
+Course-level variables and student-level variables should be included in the same data table. Course-level variables should be present as separate columns. For instance, if students took multiple courses at an institution, there should be one row per student:course combination. Students that retook courses should thus have multiple rows for a single student:course combination that differ by term and grade. Student-level demographic data should be consistent across each student's rows. Note that this formatting differs from that of some other WG1 projects, where there are separate tables for course- and student-level variables. 
 
 See the below example: 
 
 <!-- example-table-LIST:START -->
-| crs_name| crs_term | st_id | female| firstgen | numgrade
-| :----| :---- | :---- | :---- | :---- | :---- |
-| PHYS101 | 202101|123| 0 | 1 | 2.0|
-| BIO101 | 202103|123| 0 | 1 | 3.3|
-| CHEM001 | 202010|123| 0 | 1 | 4.0|
-| CHEM001 | 202101|456| 1 | 0| 3.7|
+| crs_name| crs_term | st_id | female| firstgen | numgrade | gpao | 
+| :----| :---- | :---- | :---- | :---- | :---- |:---- |
+| PHYS101 | 202101|123| 0 | 1 | 2.0| 2.74 |
+| BIO101 | 202103|123| 0 | 1 | 3.3|3.38 |
+| CHEM001 | 202010|123| 0 | 1 | 4.0|3.89 |
+| CHEM001 | 202101|456| 1 | 0| 3.7|3.45 |
 
-### New variables for upper-division courses
-Note that upper-division courses require these new variables: 
+### Bare minimum variables for running code: 
+✻ = variables specific to Project 6, not in original Working group 1 Data Description
 
-* 
+Student-level variables
 
-*We are currently working on adding these to the DataDescription file.*
+* st_id 
+* firstgen
+* ethniccode
+* ethniccode_cat
+* female
+* lowincomflag
+* transfer
+* international
+* grad_gpa ✻
+* grad_major ✻
+* grad_term ✻
+* admit_term ✻
+* time_ to_grad ✻
+
+Course-level variables 
+
+* crs_sbj
+* crs_name
+* numgrade
+* numgrade_w
+* is_dfw
+* crs_retake
+* crs_term
+* summer_crs
+* gpao
+* crs_component
+* current_major
+* begin_ term_ cum_gpa 
+* urm 
+* cum_ prior_ gpa ✻
+* prior_units ✻
+
 
 ## Running Code
 
@@ -41,12 +74,12 @@ Note that upper-division courses require these new variables:
 
 	`setwd <- c("~/Documents/your-folder/subfolder/")`
 
-3. Then choose your dataset as `dat`. This will be the file name of your dataset, which should end in .csv. Please include the command `na.strings = c("","NA"))` which ensures blank cells will be entered as NA. 
+3. Then choose your dataset as `dat`. This will be the file name of your dataset, which should end in .csv. Please include the command `na.strings = c("","NA"))` which ensures blank cells will be entered as NA. Please name this dataset `dat`, as it will be referenced by other scripts by this name. 
 
 	`dat <- read.csv("YOUR-DATASET-NAME.csv", 
                 na.strings=c("","NA"))`
                 
-4. Once these are entered correctly, select all the code in the `seismic_setup.R` script and press Run. (Command + Enter on Mac). This may take a few minutes, but it should output all files in your named folder. This script will also install any package dependencies you do not already have installed. 
+4. Once these are entered correctly, select all the code in the `seismic_setup.R` script and press Run. (Command + Enter on Mac). This may take a few minutes, but it should output all files in your named folder. **Note:** This script will also install any package dependencies you do not already have installed. 
 
 
 # Results Returned
