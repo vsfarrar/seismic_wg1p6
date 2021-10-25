@@ -6,12 +6,14 @@ dat_new <-
   filter(!is.na(numgrade)) %>%
 #exclude students who retook the course
   filter(crs_retake == 0) %>%
-#exclude students who have no cum_prior_gpa 
-  filter(!is.na(cum_prior_gpa)) %>%
+#exclude students who have no cum_prior_gpa or gpao
+  filter(!is.na(cum_prior_gpa) & !is.na(gpao)) %>%
 #exclude students whose gender is not "M" or "F", or is missing 
-  filter(female != 2 | is.na(female))
+  filter(female != 2 & !is.na(female)) %>%
+#exclude summer terms 
+  filter(summer_crs == 0)
 
-#create a report of what got filtered out
+#Create a summary report of students that were filtered out ####
 
 filtered_out <- 
   #antijoin returns all entries filtered out 
@@ -20,13 +22,14 @@ anti_join(dat,dat_new) %>%
   count(retaking_course = crs_retake == 1, 
         missing_numgrade = is.na(numgrade), 
         missing_cum_prior_gpa = is.na(cum_prior_gpa), 
+        missing_gpao = is.na(gpao),
         missing_or_nonbinary_gender = (female==2 | is.na(female)))
 
 #export the filtered out data report
 write.csv(filtered_out, paste0("n_excluded_by_filters",current_date,".csv"))
 
 #####################
-#Demographic Conversion
+#Demographic Conversion ####
 
 #create report of missing demographic information 
   #these missing variables will be coded as 0 conservatively, rather than being excluded
@@ -43,11 +46,11 @@ dat_new %>%
 
 colnames(missing_demog) <- c("","n") #edit column names 
 
-#export the reprot
+#export the report
 write.csv(missing_demog, paste0("n_missing_demographics_",current_date,".csv"))
 
 #Convert Demographics to 0 (conservative, instead of excluding)
 dat_new <- 
 dat_new %>% 
 tidyr::replace_na(list(ethnicode_cat = 0, firstgen = 0, international = 0,
-                       transfer = 0, lowincomeflag = 0))
+                       transfer = 0, lowincomeflag = 0, urm = 0))

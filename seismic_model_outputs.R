@@ -1,22 +1,25 @@
 
-#run a mixed model wtih all main effects only, term as a random effect, for each course 
+#run a mixed model wtih all main effects only, term as a random effect, for each course
+  #controlling for GPAO 
+  #race/ethnicity defined as ethnicode_cat
 
 main_fx_all <-
 dat_new %>%
   nest(-crs_name) %>%
-  mutate(fit = map(data, ~lmer(numgrade ~ cum_prior_gpa + female + as.factor(ethnicode_cat) + firstgen + transfer + lowincomeflag + international
+  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + as.factor(ethnicode_cat) + firstgen + transfer + lowincomeflag + international
                                + (1|crs_term), data = .)), 
          results = map(fit, tidy)) %>%
   unnest(results) %>%
   select(-data, -fit) %>%
   mutate(p.value = round(p.value, digits = 4)) 
 
-#model with URM as defined previously 
+#nixed model with main effects, controlling for GPAO
+  #race/ethnicity defined as urm
+
 main_fx_urm <-
 dat_new %>% 
-  mutate(urm = ifelse(ethnicode_cat %in% c(1,3), 1, 0)) %>%
   nest(-crs_name) %>%
-  mutate(fit = map(data, ~lmer(numgrade ~ cum_prior_gpa + female + urm + firstgen + transfer + lowincomeflag + international
+  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + urm + firstgen + transfer + lowincomeflag + international
                                + (1|crs_term), data = .)), 
          results = map(fit, tidy)) %>%
   unnest(results) %>%
