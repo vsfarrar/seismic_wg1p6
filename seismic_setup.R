@@ -27,7 +27,7 @@ dat<-dat %>% mutate(urm=if_else(ethniccode_cat==1 | ethniccode_cat==3,1,0))
 #Nick: if the using the rename_umich_seismic script, do this to change the names
 colnames(dat)[14]<-'cum_prior_gpa'
 
-# Nick: pull out the required courses and semesters
+# Nick: pull out the required courses and semesters.
 fall_sem<-1760
 win_sem<-2220
 course_names<-c("BIOLOGY 305","MCDB 428")
