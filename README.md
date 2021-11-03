@@ -10,6 +10,23 @@
  The goal of this code repository is to provide code that returns summary statistics, demographic information and mixed model outputs for a variety of course datasets.  To run, this code requires the R Statistical language and a dataset formatted in the described SEISMIC format (see more below).
  
 #  How to run Code 
+
+## UMich specific instructions
+To run this code with the UMich data, you will need to format the LARC data into something more useable. For that, Ben has provided scripts to do.
+
+* For general formatting, see [Ben's LARC repo](https://github.com/bkoester/LARC)
+* For SEISMIC formatting, see [Ben's WG1-P1 repo](https://github.com/seismic2020/WG1-P1/tree/master/UMICH) Note that this does not return all of the variables needed for this project. (mainly the uppr division specific). Some variables have different names and those should be addressed in the `seismic_setup.R` file in this branch.
+
+For cleanness, the outputs will go to a results folder in the repo. Make sure you create one before running the code!
+
+### Minor updates in this branch
+There were some spelling errors in the main branch for variables names. Those changes are documented here
+* data_filtering lines 39 & 40 have ethniccode_cat spelled wrong. Line 44 lowincomflag doesn't match github repo name, line 56 lowincom
+* Gapsovertime: lowincom line 7, 47;adding mean_gpao to line 54 because line 57 needs it
+* Outputs: line 9, 22. ethniccode_cat is spelled wrong line 9
+* Advantages: all of line 7 groupings
+
+Also note that in the outputs file, we have changed `map` to explicitly be from the `purrr` package. For some reason, R was pulling from a different package and throwing errors.
  
 ##  Dataset Preparation 
  
