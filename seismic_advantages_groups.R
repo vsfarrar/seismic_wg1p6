@@ -5,22 +5,22 @@
 advantages_by_course <- 
 dat_new %>%
   mutate(advantage = case_when(
-    female == "0" & urm == "0" & firstgen == "0" & lowincomeflag == "0"  ~ "0",
-    female == "1" & urm == "0" & firstgen == "0" & lowincomeflag == "0"  ~ "1A",
-    female == "0" & urm == "1" & firstgen == "0" & lowincomeflag == "0"  ~ "1B", 
-    female == "0" & urm == "0" & firstgen == "0" & lowincomeflag == "1"  ~ "1C", 
-    female == "0" & urm == "0" & firstgen == "1" & lowincomeflag == "0"  ~ "1D", 
-    female == "0" & urm == "1" & firstgen == "1" & lowincomeflag == "0"  ~ "2A", 
-    female == "0" & urm == "1" & firstgen == "0" & lowincomeflag == "1"  ~ "2B", 
-    female == "1" & urm == "1" & firstgen == "0" & lowincomeflag == "0"  ~ "2C", 
-    female == "0" & urm == "0" & firstgen == "1" & lowincomeflag == "1"  ~ "2D", 
-    female == "1" & urm == "0" & firstgen == "1" & lowincomeflag == "0"  ~ "2E", 
-    female == "1" & urm == "0" & firstgen == "0" & lowincomeflag == "1"  ~ "2F", 
-    female == "1" & urm == "0" & firstgen == "1" & lowincomeflag == "1"  ~ "3A", 
-    female == "1" & urm == "1" & firstgen == "1" & lowincomeflag == "0"  ~ "3B",
-    female == "1" & urm == "1" & firstgen == "0" & lowincomeflag == "1"  ~ "3C", 
-    female == "0" & urm == "1" & firstgen == "1" & lowincomeflag == "1"  ~ "3D",
-    female == "1" & urm == "1" & firstgen == "1" & lowincomeflag == "1"  ~ "4",
+    female == "0" & urm == "0" & firstgen == "0" & lowincomflag == "0"  ~ "0",
+    female == "1" & urm == "0" & firstgen == "0" & lowincomflag == "0"  ~ "1A",
+    female == "0" & urm == "1" & firstgen == "0" & lowincomflag == "0"  ~ "1B", 
+    female == "0" & urm == "0" & firstgen == "0" & lowincomflag == "1"  ~ "1C", 
+    female == "0" & urm == "0" & firstgen == "1" & lowincomflag == "0"  ~ "1D", 
+    female == "0" & urm == "1" & firstgen == "1" & lowincomflag == "0"  ~ "2A", 
+    female == "0" & urm == "1" & firstgen == "0" & lowincomflag == "1"  ~ "2B", 
+    female == "1" & urm == "1" & firstgen == "0" & lowincomflag == "0"  ~ "2C", 
+    female == "0" & urm == "0" & firstgen == "1" & lowincomflag == "1"  ~ "2D", 
+    female == "1" & urm == "0" & firstgen == "1" & lowincomflag == "0"  ~ "2E", 
+    female == "1" & urm == "0" & firstgen == "0" & lowincomflag == "1"  ~ "2F", 
+    female == "1" & urm == "0" & firstgen == "1" & lowincomflag == "1"  ~ "3A", 
+    female == "1" & urm == "1" & firstgen == "1" & lowincomflag == "0"  ~ "3B",
+    female == "1" & urm == "1" & firstgen == "0" & lowincomflag == "1"  ~ "3C", 
+    female == "0" & urm == "1" & firstgen == "1" & lowincomflag == "1"  ~ "3D",
+    female == "1" & urm == "1" & firstgen == "1" & lowincomflag == "1"  ~ "4",
     TRUE ~ "NA")) %>%
   mutate(grade_gpao_diff = numgrade - gpao) %>% 
   group_by(crs_name, advantage) %>%
@@ -102,4 +102,4 @@ dat_new %>%
 #                               "3A" = "+FG+LI+W"))
 
 #export data to csv
-write.csv(advantages_by_course, paste0("summary_stats_by_advantages_",current_date, ".csv"))
+write.csv(advantages_by_course, paste0("Results/summary_stats_by_advantages_",current_date, ".csv"))

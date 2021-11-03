@@ -4,7 +4,7 @@
 
 demog_gaps_by_term <- 
 dat_new %>%
-  pivot_longer(cols = c(female,urm,firstgen, lowincomeflag, transfer),
+  pivot_longer(cols = c(female,urm,firstgen, lowincomflag, transfer),
                names_to = "demographic_var",
                values_to = "value") %>%
   group_by(crs_name, crs_term, demographic_var, value) %>%
@@ -35,7 +35,7 @@ dat_new %>%
 #             se_prior_gpa = std.error(cum_prior_gpa))
 
 #export to a table 
-write.csv(demog_gaps_by_term, paste0("demographic_gaps_by_term_",current_date,".csv"))
+write.csv(demog_gaps_by_term, paste0("Results/demographic_gaps_by_term_",current_date,".csv"))
 #write.csv(demog_gaps_by_year, paste0("demographic_gaps_by_year_",current_date,".csv"))
 
 #### MEAN DIFFERENCES BY TERM ####
@@ -44,17 +44,17 @@ write.csv(demog_gaps_by_term, paste0("demographic_gaps_by_term_",current_date,".
 
 grade_gpa_diff <-
 dat_new %>%
-  pivot_longer(cols = c(female,urm,firstgen, lowincomeflag, transfer),
+  pivot_longer(cols = c(female,urm,firstgen, lowincomflag, transfer),
                names_to = "demographic_var",
                values_to = "value") %>%
   group_by(crs_name, crs_term, demographic_var, value) %>%
   summarise(mean_grade = mean(numgrade, na.rm = T),
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T)) %>%
-  pivot_wider(names_from = value, values_from = c(mean_grade,mean_prior_gpa))  %>%
+  pivot_wider(names_from = value, values_from = c(mean_grade,mean_prior_gpa,mean_gpao))  %>%
   mutate(grade_diff_01 = mean_grade_0 - mean_grade_1, 
          gpa_diff_01 = mean_prior_gpa_0 - mean_prior_gpa_1,
          gpao_diff_01 = mean_gpao_0 - mean_gpao_1)
 
 #export to a table 
-write.csv(grade_gpa_diff, paste0("mean_grade_gpa_differences_by_term",current_date,".csv"))
+write.csv(grade_gpa_diff, paste0("Results/mean_grade_gpa_differences_by_term",current_date,".csv"))

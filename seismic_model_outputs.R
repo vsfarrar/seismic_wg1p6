@@ -6,9 +6,9 @@
 main_fx_all <-
 dat_new %>%
   nest(-crs_name) %>%
-  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + as.factor(ethnicode_cat) + firstgen + transfer + lowincomeflag + international
+  mutate(fit = purrr::map(data, ~lmer(numgrade ~ gpao + female + as.factor(ethniccode_cat) + firstgen + transfer + lowincomflag + international
                                + (1|crs_term), data = .)), 
-         results = map(fit, tidy)) %>%
+         results = purrr::map(fit, tidy)) %>%
   unnest(results) %>%
   select(-data, -fit) %>%
   mutate(p.value = round(p.value, digits = 4)) 
@@ -19,15 +19,15 @@ dat_new %>%
 main_fx_urm <-
 dat_new %>% 
   nest(-crs_name) %>%
-  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + urm + firstgen + transfer + lowincomeflag + international
+  mutate(fit = purrr::map(data, ~lmer(numgrade ~ gpao + female + urm + firstgen + transfer + lowincomflag + international
                                + (1|crs_term), data = .)), 
-         results = map(fit, tidy)) %>%
+         results = purrr::map(fit, tidy)) %>%
   unnest(results) %>%
   select(-data, -fit) %>%
   mutate(p.value = round(p.value, digits = 4)) 
 
 #export model outputs from each course
-write.csv(main_fx_all, paste0("mixed_model_outputs_main_effects_",current_date,".csv"))
-write.csv(main_fx_urm, paste0("mixed_model_outputs_main_effects_urm_",current_date,".csv"))
+write.csv(main_fx_all, paste0("Results/mixed_model_outputs_main_effects_",current_date,".csv"))
+write.csv(main_fx_urm, paste0("Results/mixed_model_outputs_main_effects_urm_",current_date,".csv"))
 
 
