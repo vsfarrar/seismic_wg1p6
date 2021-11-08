@@ -12,6 +12,7 @@ head(mydata)
 ggplot(mydata %>% filter(demographic_var=='female',crs_name=='BIOLOGY 305'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+  
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -21,6 +22,7 @@ ggplot(mydata %>% filter(demographic_var=='female',crs_name=='BIOLOGY 305'),aes(
 ggplot(mydata %>% filter(demographic_var=='firstgen',crs_name=='BIOLOGY 305'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -30,6 +32,7 @@ ggplot(mydata %>% filter(demographic_var=='firstgen',crs_name=='BIOLOGY 305'),ae
 ggplot(mydata %>% filter(demographic_var=='lowincomflag',crs_name=='BIOLOGY 305'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -39,6 +42,7 @@ ggplot(mydata %>% filter(demographic_var=='lowincomflag',crs_name=='BIOLOGY 305'
 ggplot(mydata %>% filter(demographic_var=='transfer',crs_name=='BIOLOGY 305'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+    
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -48,6 +52,7 @@ ggplot(mydata %>% filter(demographic_var=='transfer',crs_name=='BIOLOGY 305'),ae
 ggplot(mydata %>% filter(demographic_var=='urm',crs_name=='BIOLOGY 305'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -57,6 +62,7 @@ ggplot(mydata %>% filter(demographic_var=='urm',crs_name=='BIOLOGY 305'),aes(x=c
 ggplot(mydata %>% filter(demographic_var=='female',crs_name=='MCDB 428'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -66,6 +72,7 @@ ggplot(mydata %>% filter(demographic_var=='female',crs_name=='MCDB 428'),aes(x=c
 ggplot(mydata %>% filter(demographic_var=='firstgen',crs_name=='MCDB 428'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -75,6 +82,7 @@ ggplot(mydata %>% filter(demographic_var=='firstgen',crs_name=='MCDB 428'),aes(x
 ggplot(mydata %>% filter(demographic_var=='lowincomflag',crs_name=='MCDB 428'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -84,6 +92,7 @@ ggplot(mydata %>% filter(demographic_var=='lowincomflag',crs_name=='MCDB 428'),a
 ggplot(mydata %>% filter(demographic_var=='transfer',crs_name=='MCDB 428'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
@@ -93,6 +102,7 @@ ggplot(mydata %>% filter(demographic_var=='transfer',crs_name=='MCDB 428'),aes(x
 ggplot(mydata %>% filter(demographic_var=='urm',crs_name=='MCDB 428'),aes(x=crs_term,y=mean_grade,color=value))+
     geom_point()+
     geom_errorbar(aes(ymin=mean_grade-sem_grade,ymax=mean_grade+sem_grade,width=0.5))+
+    geom_text(aes(label=n),size=3,position=position_dodge(1.3))+
     geom_point(aes(y=mean_prior_gpa,color=value),shape=15,position=position_nudge(-0.5),alpha=0.4)+
     geom_errorbar(aes(ymin=mean_prior_gpa-se_prior_gpa,ymax=mean_prior_gpa+se_prior_gpa,width=0.5),position=position_nudge(-0.5),alpha=0.4)+
     ylim(c(0,4))+
