@@ -17,6 +17,9 @@ To run this code with the UMich data, you will need to format the LARC data into
 * For general formatting, see [Ben's LARC repo](https://github.com/bkoester/LARC)
 * For SEISMIC formatting, see [Ben's WG1-P1 repo](https://github.com/seismic2020/WG1-P1/tree/master/UMICH) Note that this does not return all of the variables needed for this project. (mainly the uppr division specific). Some variables have different names and those should be addressed in the `seismic_setup.R` file in this branch.
 
+* In this repo, Nick has added an in-progress `wg1_p6_rename_umich_seismic` file which is adding those other file names.
+* Nick has also added a `Visualizing Results` script to make the plots for the `demographic_gaps_by_term` results.
+
 For cleanness, the outputs will go to a results folder in the repo. Make sure you create one before running the code!
 
 ### Minor updates in this branch
