@@ -4,7 +4,9 @@ wg1_p1_rename_umich_seismic <- function(sr,sc,COVID=FALSE)
    #sc <- read_tsv("/Users/bkoester/Box Sync/LARC.WORKING/BPK_LARC_STUDENT_COURSE_20210209.tab")
    #sr <- read_tsv("/Users/bkoester/Box Sync/LARC.WORKING/BPK_LARC_STUDENT_RECORD_20210209.tab") 
    
-   source('C:/Users/ntyou/Documents/Research/G1-P1/UMICH/term_count.R')
+   source('term_count.R')
+   source('term_grad.R')
+   source('semester_grad.R')
   
    if (COVID == FALSE)
    {
@@ -25,6 +27,10 @@ wg1_p1_rename_umich_seismic <- function(sr,sc,COVID=FALSE)
    sc <- term_count(sr,sc)
    sc$SUM <- sc$TERMYR/2.0-0.5
    
+   sr<-term_grad(sr) #Nick
+   
+   sr<-semester_grad(sr,st) #Nick
+   
    sr <- sr %>% mutate(LI=0)
    sc <- sc %>% mutate(WD=0,RT=0,SEM=0,BLANK=NA,IS_DFW=0)
    sc$WD[which(sc$CRSE_GRD_OFFCL_CD == 'W')] <- 1
@@ -33,17 +39,26 @@ wg1_p1_rename_umich_seismic <- function(sr,sc,COVID=FALSE)
    
    sr$LI[which(sr$MEDINC < 40000)] <- 1
    
-   # get the graduation major(s) & graduation  date
-   # graduation date is UC Davis format: YYYYMM where date is when degree is conferred
+   # Nick: get the graduation major(s) & graduation  date
+   # Nick: graduation date is UC Davis format: YYYYMM where date is when degree is conferred
    sr<-sr %>% mutate(grad_major=if_else(is.na(UM_DGR_1_MAJOR_2_DES), 
                                         UM_DGR_1_MAJOR_1_DES,
                                         paste(UM_DGR_1_MAJOR_1_DES,UM_DGR_1_MAJOR_2_DES,sep = ";")),
                      grad_date=format(as.Date(UM_DGR_1_CNFR_DT), "%Y%m"))
    
+   # Nick: use Ben's code to get grad GPA
+   # Nick: needs st so loading and rewriting outcome to sr
+   # Nick: only getting grad GPA of first degree
+   sr<-merge(sr,st,by.y=c('STDNT_ID','TERM_CD'),by.x=c('STDNT_ID','UM_DGR_1_CMPLTN_TERM_CD'),all.x=TRUE)
+   sr <- sr[,!names(sr) %in% c('TERM_CD','ENTRY_TYP_SHORT_DES','PRMRY_CRER_CD','CRER_LVL_CD')]
+
    
-   # define a URM category
+   # Nick: define a URM category
    sr$urm<-1
    
+   # get current major
+   sc<-merge(sc,st,by.x=c("STDNT_ID","TERM_CD"),by.y=c("STDNT_ID","TERM_CD"),all.x=TRUE)
+   sc<-sc %>% mutate(CURRENT_MAJOR=if_else(is.na(PGM_1_MAJOR_2_CIP_DES),PGM_1_MAJOR_1_CIP_DES,paste(PGM_1_MAJOR_1_CIP_DES,";",PGM_1_MAJOR_2_CIP_DES)))
    
    sr_names <- c("st_id"="STDNT_ID",
                 "firstgen"="FIRST_GEN",
@@ -54,20 +69,21 @@ wg1_p1_rename_umich_seismic <- function(sr,sc,COVID=FALSE)
                 "lowincomflag"="LI",
                 "transfer"="TRANSFER",
                 "international"="STDNT_INTL_IND",
-                
+                "grad_gpa"="CUM_GPA", #Nick (Ben's code does the NA for non-grads)
                 "grad_major"="grad_major", #Nick
                 "grad_term"="UM_DGR_1_CMPLTN_TERM_DES", #Nick
                 "grad_termcd"="UM_DGR_1_CMPLTN_TERM_CD", #Nick
                 "attend_term"="FIRST_TERM_ATTND_SHORT_DES", #Nick
                 "attend_termcd"="FIRST_TERM_ATTND_CD", #Nick
-                
+                "time_to_grad"="TIME_TO_GRAD", #Nick
                 "us_hs"="HS_PSTL_CD",
                 "cohort"="FIRST_TERM_ATTND_SHORT_DES",
                 "englsr"="MAX_ACT_ENGL_SCR",
                 "mathsr"="MAX_ACT_MATH_SCR",
                 "hsgpa"="HS_GPA",
 
-                "grad_date"="grad_date" #Nick added
+                "grad_date"="grad_date", #Nick added
+                "time_to_grad_years"="TERMYR" #Nick added
 )
    
    
@@ -84,16 +100,16 @@ wg1_p1_rename_umich_seismic <- function(sr,sc,COVID=FALSE)
                 "summer_crs"="SEM",
                 "gpao"="EXCL_CLASS_CUM_GPA",
                 "crs_component"="CRSE_CMPNT_CD",
-                
+                "current_major"="CURRENT_MAJOR", #Nick
                 "begin_term_cum_gpa"="BOT_GPA", #cum_gpa
                 "urm"="urm",
                 "cum_prior_gpa"="BOT_GPA", #treating these two as the same
-                
+                "prior_units"=
                 "crs_credits"="UNITS_ERND_NBR",
                 "instructor_name"="BLANK",
 
                 "class_number"="CLASS_NBR",
-                "enrl_from_cohort"="SUM",
+                "enrl_from_cohort"="SUM", # This is number of years
                 "aptaker"="BLANK",
                 "apskipper"="BLANK",
                 "tookcourse"="BLANK",
