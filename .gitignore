@@ -38,3 +38,5 @@ rsconnect/
 *.csv
 Umich_SEISMIC_20210722.tsv
 *.ipynb
+*.tsv
+*.tab
