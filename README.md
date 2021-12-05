@@ -1,8 +1,25 @@
-# SEISMIC WG1P6 Project Code
+# SEISMIC WG1P6 Project 
  Code for [SEISMIC Working Group 1 (Measurements) Project 6](https://www.seismicproject.org/working-groups/measurement/) : Equity Gaps in Upper Division Courses
  
- Created as part of the SEISMIC Summer Measurements Fellowship 2021 by Victoria Farrar
+Code initially created as part of the SEISMIC Summer Measurements Fellowship 2021 by Victoria Farrar
  (Mentor: Dr. Natalia Caporale)
+ 
+## SEISMIC Collaborators
+| Name | Institution | Role |
+| ----: |  ----: | :---- |
+| [Victoria Farrar](mailto:vsfarrar@ucdavis.edu)| UC Davis | Analysis Lead, Graduate student |
+[Natalia Caporale](mailto:ncaporale@ucdavis.edu)| UC Davis | Project Lead, Assistant Professor of Teaching|
+[Montserrat Valdivia](mailto:mbvaldiv@indiana.edu) | Indiana University | Analysis Lead, Graduate student |
+[Stefano Fiorini](sfiorini@indiana.edu)| Indiana University | Project Support |
+[Nicholas Young](mailto:ntyoung@umich.edu)| University of Michigan | Analysis Lead|
+[Becky Matz](mailto:rlmatz@umich.edu) | University of Michigan | Project Support |
+[Ben Koester](mailto:bkoester@umich.edu) | University of Michigan | Project Support |
+[Emily Bonem](mailto:ebonem@purdue.edu) | Purdue University | Analysis Lead | 
+[Chantal Levesque-Bristol](mailto:cbristol@purdue.edu)| Purdue University| Project Support |
+
+Working Group meeting notes can be found [here](https://docs.google.com/document/d/1VW4SUUVVpLWOKNFZiq5_D8Jlr0es731bYSH4elqOhn8/edit#).
+(*permissions required*)
+ 
  
 #  Project Goal
  This project aims to examine equity gaps associated with race/ethnicity, gender, first-generation status, low income status, international and transfer student status on equity gaps in upper-division science courses at various institutions. Ideally, the code in this repository will be used to analyse data from a variety of courses and institutions. 
@@ -101,4 +118,11 @@ Course-level variables
 
 * `n_missing_demographics` 
 	* for each demographic group, lists how many students were missing information and were conservatively coded as 0. 
+
+# Model Assumption Checks
+
+After a discussion at our SEISMIC Working Group meeting (11/8/2021), we discussed a need to check model assumptions and residuals. This includes checks of residual normality and heteroscedascity. Montserrat created code to check model assumptions, stored in the **/model _assumption _checks** folder. 
+
+* Code: `/model_assumption_checks/assumptions_for_original_models.r`
+* Directions on how to run / interpret code: `/model_assumption_checks/Running-and-interpreting-assumptions.pdf`
              
