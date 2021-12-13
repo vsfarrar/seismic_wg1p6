@@ -7,9 +7,13 @@
 #get path
 path = getwd()
 
+#use pacman to call libraries (installs them if not already installed)
+pacman::p_load(xlsx, nlme) 
+
 # call the following libraries
 library(xlsx)
 library(nlme)
+
 model_1 = numgrade ~ gpao + female + as.factor(ethniccode_cat) + firstgen + transfer + lowincomflag + international + (1|crs_term)
 model_2 = numgrade ~ gpao + female + urm + firstgen + transfer + lowincomflag + international + (1|crs_term)
 
