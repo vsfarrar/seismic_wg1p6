@@ -46,7 +46,7 @@ See the below example:
 | CHEM001 | 202010|123| 0 | 1 | 4.0|3.89 |
 | CHEM001 | 202101|456| 1 | 0| 3.7|3.45 |
 
-### Bare minimum variables for running code: 
+### Required variables
 ✻ = variables specific to Project 6, not in original Working group 1 Data Description
 
 Student-level variables
@@ -55,6 +55,7 @@ Student-level variables
 * firstgen
 * ethniccode
 * ethniccode_cat
+* urm
 * female
 * lowincomflag
 * transfer
@@ -79,9 +80,29 @@ Course-level variables
 * crs_component
 * current_major
 * begin_ term_ cum_gpa 
-* urm 
 * cum_ prior_ gpa ✻
 * prior_units ✻
+
+### Bare minimum variables for running code:
+
+Of the above variables, this lists the *bare minimum* to run the code as it stands in this repository. Without these variables, the code will not run. 
+Please refer to the DataDescription and Project meeting notes above for details of how these variables are defined. 
+
+* st_id
+* female
+* ethniccode_cat
+* urm 
+* firstgen
+* international
+* transfer
+* lowincomeflag
+* numgrade
+* cumpriorgpa
+* gpao
+* crs_name
+* crs_term
+* crs_retake
+* summer_crs
 
 
 ## Running Code
