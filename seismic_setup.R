@@ -15,7 +15,6 @@ dat <- read.csv("X:/BAR/Projects/SEISMIC/MeasurementGroup/MeasuresAndEquity/Repl
 
 #use pacman to install and load all packages required
 if (!require("pacman")) install.packages("pacman") #install pacman if not already installed
-if (!require("robustlmm")) install.packages("robustlmm") #install robustlmm if not already installed
 pacman::p_load(tidyverse, dplyr,broom, plotrix, broom.mixed, lme4, lmerTest, robustlmm)
 
 #grab current date using Sys.Date()
