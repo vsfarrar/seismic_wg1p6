@@ -102,4 +102,4 @@ dat_new %>%
 #                               "3A" = "+FG+LI+W"))
 
 #export data to csv
-write.csv(advantages_by_course, paste0("summary_stats_by_advantages_",current_date, ".csv"))
+write.csv(advantages_by_course, paste0(institution,"_summary_stats_by_advantages_",current_date, ".csv"))

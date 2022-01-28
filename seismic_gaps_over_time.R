@@ -35,7 +35,7 @@ dat_new %>%
 #             se_prior_gpa = std.error(cum_prior_gpa))
 
 #export to a table 
-write.csv(demog_gaps_by_term, paste0("demographic_gaps_by_term_",current_date,".csv"))
+write.csv(demog_gaps_by_term, paste0(institution, "_demographic_gaps_by_term_",current_date,".csv"))
 #write.csv(demog_gaps_by_year, paste0("demographic_gaps_by_year_",current_date,".csv"))
 
 #### MEAN DIFFERENCES BY TERM ####
@@ -57,4 +57,4 @@ dat_new %>%
          gpao_diff_01 = mean_gpao_0 - mean_gpao_1)
 
 #export to a table 
-write.csv(grade_gpa_diff, paste0("mean_grade_gpa_differences_by_term",current_date,".csv"))
+write.csv(grade_gpa_diff, paste0(institution,"_mean_grade_gpa_differences_by_term",current_date,".csv"))

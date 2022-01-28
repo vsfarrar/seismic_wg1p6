@@ -26,7 +26,7 @@ anti_join(dat,dat_new) %>%
         missing_or_nonbinary_gender = (female==2 | is.na(female)))
 
 #export the filtered out data report
-write.csv(filtered_out, paste0("n_excluded_by_filters",current_date,".csv"))
+write.csv(filtered_out, paste0(institution,"_n_excluded_by_filters",current_date,".csv"))
 
 #####################
 #Demographic Conversion ####
@@ -47,7 +47,7 @@ dat_new %>%
 colnames(missing_demog) <- c("","n") #edit column names 
 
 #export the report
-write.csv(missing_demog, paste0("n_missing_demographics_",current_date,".csv"))
+write.csv(missing_demog, paste0(institution,"_n_missing_demographics_",current_date,".csv"))
 
 #Convert Demographics to 0 (conservative, instead of excluding)
 dat_new <- 

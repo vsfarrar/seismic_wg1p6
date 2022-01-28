@@ -116,8 +116,12 @@ Please refer to the DataDescription and Project meeting notes above for details 
 
 	`dat <- read.csv("YOUR-DATASET-NAME.csv", 
                 na.strings=c("","NA"))`
+
+4. Define your institution name / abbreviation. For example, UC Davis could be entered as "UCD". Please use quotes. (This is used for file naming for outputs). 
+
+	`institution <- "YOUR UNI"`    
                 
-4. Once these are entered correctly, select all the code in the `seismic_setup.R` script and press Run. (Command + Enter on Mac). This may take a few minutes, but it should output all files in your named folder. **Note:** This script will also install any package dependencies you do not already have installed. 
+4. Once these are entered correctly, select all the code in the `seismic_setup.R` script and press Run. (Command + Enter on Mac). This may take a few minutes, but it should output all files in your named folder. **Note:** This script will also *automatically* install any package dependencies you do not already have installed. 
 
 
 # Results Returned
@@ -140,7 +144,8 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * `n_missing_demographics` 
 	* for each demographic group, lists how many students were missing information and were conservatively coded as 0. 
 
-# Model Assumption Checks
+## Model Assumption Checks
+**UPDATE:** Model Assumption Checks no longer required if using robust linear models with `robustlmm` package. 
 
 After a discussion at our SEISMIC Working Group meeting (11/8/2021), we discussed a need to check model assumptions and residuals. This includes checks of residual normality and heteroscedascity. Montserrat created code to check model assumptions, stored in the **/model _assumption _checks** folder. 
 

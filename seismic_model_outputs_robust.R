@@ -46,7 +46,7 @@ main_fx_no_gpao <-
 
 
 #export model outputs from each course
-write.csv(main_fx_all_1, paste0("mixed_model_outputs_main_effects_robust_",current_date,".csv"))
-write.csv(main_fx_urm_1, paste0("mixed_model_outputs_main_effects_urm_robust_",current_date,".csv"))
-write.csv(main_fx_no_gpao, paste0("mixed_model_outputs_noGPAO_robust_",current_date,".csv"))
+write.csv(main_fx_all_1, paste0(institution, "_mixed_model_outputs_main_effects_robust_",current_date,".csv"))
+write.csv(main_fx_urm_1, paste0(institution, "_mixed_model_outputs_main_effects_urm_robust_",current_date,".csv"))
+write.csv(main_fx_no_gpao, paste0(institution, "_mixed_model_outputs_noGPAO_robust_",current_date,".csv"))
 

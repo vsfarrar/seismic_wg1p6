@@ -27,7 +27,7 @@ dat_new %>%
   mutate(p.value = round(p.value, digits = 4)) 
 
 #export model outputs from each course
-write.csv(main_fx_all, paste0("mixed_model_outputs_main_effects_",current_date,".csv"))
-write.csv(main_fx_urm, paste0("mixed_model_outputs_main_effects_urm_",current_date,".csv"))
+write.csv(main_fx_all, paste0(institution,"_mixed_model_outputs_main_effects_",current_date,".csv"))
+write.csv(main_fx_urm, paste0(institution, "_mixed_model_outputs_main_effects_urm_",current_date,".csv"))
 
 

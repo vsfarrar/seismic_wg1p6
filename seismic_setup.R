@@ -11,6 +11,9 @@ setwd("X:/BAR/Projects/SEISMIC/MeasurementGroup/MeasuresAndEquity/Replicating Vi
 dat <- read.csv("X:/BAR/Projects/SEISMIC/MeasurementGroup/MeasuresAndEquity/Replicating Victoria's code/Data/cleaned_data.csv", 
                 na.strings=c("","NA"))
 
+#name your institution - used for file naming (e.g."UMich", "IU", "UCD")
+institution <- "UCD"
+
 ################################
 
 #use pacman to install and load all packages required
