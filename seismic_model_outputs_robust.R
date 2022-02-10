@@ -5,7 +5,7 @@
 
 main_fx_all_1 <-
   dat_new %>%
-  nest(-crs_name) %>%
+  group_by(crs_name) %>% nest() %>%
   mutate(fit = map(data, ~rlmer(numgrade ~ gpao + female + as.factor(ethnicode_cat) + firstgen + transfer + lowincomeflag + international
                                + (1|crs_term), data = ., method = "DAStau")), 
          results = map(fit, tidy)) %>%
@@ -20,7 +20,7 @@ main_fx_all_1 = main_fx_all_1b
 
 main_fx_urm_1 <-
   dat_new %>%
-  nest(-crs_name) %>%
+  group_by(crs_name) %>% nest() %>%
   mutate(fit = map(data, ~rlmer(numgrade ~ gpao + female + urm + firstgen + transfer + lowincomeflag + international
                                 + (1|crs_term), data = ., method = "DAStau")), 
          results = map(fit, tidy)) %>%
@@ -34,7 +34,7 @@ main_fx_urm_1 <-
 
 main_fx_no_gpao <-
   dat_new %>%
-  nest(-crs_name) %>%
+  group_by(crs_name) %>% nest() %>%
   mutate(fit = map(data, ~rlmer(numgrade ~ female + urm + firstgen + transfer + lowincomeflag + international
                                 + (1|crs_term), data = ., method = "DAStau")), 
          results = map(fit, tidy)) %>%
