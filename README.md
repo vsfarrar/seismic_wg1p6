@@ -123,6 +123,10 @@ Please refer to the DataDescription and Project meeting notes above for details 
                 
 4. Once these are entered correctly, select all the code in the `seismic_setup.R` script and press Run. (Command + Enter on Mac). This may take a few minutes, but it should output all files in your named folder. **Note:** This script will also *automatically* install any package dependencies you do not already have installed. 
 
+**NOTE:** The robust models code may take > 30 minutes to run, depending on the RAM on your computer and the size of your course dataset at your institution. You can read more about this issue [here](https://github.com/vsfarrar/seismic_wg1p6/issues/1), and **if you are unable to get the robustlmm running, please [contact Victoria](mailto:vsfarrar@ucdavis.edu)**, who can help you try and run with pared-down code. 
+
+5. Please upload your output .csv files to the [WG1P6 Output files Google Drive folder](https://drive.google.com/drive/folders/1JiFz9f0FdiU2dCpFRpXujOcm-TZZHSBP) (*access permissions required*). 
+
 
 # Results Returned
 
