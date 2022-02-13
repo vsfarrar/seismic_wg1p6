@@ -11,7 +11,9 @@ dat_new <-
 #exclude students whose gender is not "M" or "F", or is missing 
   filter(female != 2 & !is.na(female)) %>%
 #exclude summer terms 
-  filter(summer_crs == 0)
+  filter(summer_crs == 0) %>%
+#add university to dataframe
+  mutate(university = institution)
 
 #Create a summary report of students that were filtered out ####
 

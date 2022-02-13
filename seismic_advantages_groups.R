@@ -23,7 +23,7 @@ dat_new %>%
     female == "1" & urm == "1" & firstgen == "1" & lowincomeflag == "1"  ~ "4",
     TRUE ~ "NA")) %>%
   mutate(grade_gpao_diff = numgrade - gpao) %>% 
-  group_by(crs_name, advantage) %>%
+  group_by(university, crs_name, advantage) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T), 
             se_grade = std.error(numgrade, na.rm = T),

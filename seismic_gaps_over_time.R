@@ -7,7 +7,7 @@ dat_new %>%
   pivot_longer(cols = c(female,urm,firstgen, lowincomeflag, transfer),
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(crs_name, crs_term, demographic_var, value) %>%
+  group_by(university, crs_name, crs_term, demographic_var, value) %>%
   summarise(n = n(),
             mean_grade = mean(numgrade),
             sem_grade = std.error(numgrade), 
@@ -47,7 +47,7 @@ dat_new %>%
   pivot_longer(cols = c(female,urm,firstgen, lowincomeflag, transfer),
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(crs_name, crs_term, demographic_var, value) %>%
+  group_by(university, crs_name, crs_term, demographic_var, value) %>%
   summarise(mean_grade = mean(numgrade, na.rm = T),
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T)) %>%
@@ -69,7 +69,7 @@ grade_gpa_diff_ethniccode <-
   pivot_longer(cols = ethniccode_cat,
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(crs_name, crs_term, demographic_var, value) %>%
+  group_by(university, crs_name, crs_term, demographic_var, value) %>%
   summarise(mean_grade = mean(numgrade, na.rm = T),
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T)) %>%
