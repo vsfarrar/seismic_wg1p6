@@ -32,7 +32,7 @@ Working Group meeting notes can be found [here](https://docs.google.com/document
  
  Before running the code, ensure your data is formatted in the described SEISMIC format. Please reference this data dictionary for the correct variable names and minimum variables required: 
  
-[DataDescription_ SEISMIC_ WG1P6-modifications.xlsx](https://docs.google.com/spreadsheets/d/1XcpZ3gNCmca7ECmhbUus-73b1mIsPE4w/edit?usp=sharing&ouid=101003818724972958035&rtpof=true&sd=true) (Google Drive link; open access) 
+[DataDescription_ SEISMIC_ WG1P6.xlsx](https://docs.google.com/spreadsheets/d/1SJKqRIwwFkYRMk1GrEuAUOixMuZkXgmE/edit?usp=sharing&ouid=101003818724972958035&rtpof=true&sd=true) (Google Drive link; open access) 
  
 Course-level variables and student-level variables should be included in the same data table. Course-level variables should be present as separate columns. For instance, if students took multiple courses at an institution, there should be one row per student:course combination. Students that retook courses should thus have multiple rows for a single student:course combination that differ by term and grade. Student-level demographic data should be consistent across each student's rows. Note that this formatting differs from that of some other WG1 projects, where there are separate tables for course- and student-level variables. 
 
@@ -46,7 +46,31 @@ See the below example:
 | CHEM001 | 202010|123| 0 | 1 | 4.0|3.89 |
 | CHEM001 | 202101|456| 1 | 0| 3.7|3.45 |
 
+For an example that includes all the "Bare Minimum" variables, see here: [Example dataset](https://docs.google.com/spreadsheets/d/14yD7tf09ZbpKUBF2KIkqPzPLpyKW9BeQyEd5zlR7EUM/edit?usp=sharing) (Google Doc; *open access*) 
+
+### Bare minimum variables for running code:
+
+Of the below required variables, this lists the *bare minimum* to run the code as it stands in this repository. Without these variables, the code will not run. 
+Please refer to the DataDescription and Project meeting notes above for details of how these variables are defined. 
+
+* st_id
+* female
+* ethniccode_cat
+* urm 
+* firstgen
+* international
+* transfer
+* lowincomeflag
+* numgrade
+* cumpriorgpa
+* gpao
+* crs_name
+* crs_term
+* crs_retake
+* summer_crs
+
 ### Required variables
+
 ✻ = variables specific to Project 6, not in original Working group 1 Data Description
 
 Student-level variables
@@ -82,27 +106,6 @@ Course-level variables
 * begin_ term_ cum_gpa 
 * cum_ prior_ gpa ✻
 * prior_units ✻
-
-### Bare minimum variables for running code:
-
-Of the above variables, this lists the *bare minimum* to run the code as it stands in this repository. Without these variables, the code will not run. 
-Please refer to the DataDescription and Project meeting notes above for details of how these variables are defined. 
-
-* st_id
-* female
-* ethniccode_cat
-* urm 
-* firstgen
-* international
-* transfer
-* lowincomeflag
-* numgrade
-* cumpriorgpa
-* gpao
-* crs_name
-* crs_term
-* crs_retake
-* summer_crs
 
 
 ## Running Code
@@ -141,18 +144,8 @@ Please refer to the DataDescription and Project meeting notes above for details 
 	* numgrade ~ cum prior gpa + female + firstgen + ethnicode cat + transfer + international + lowincomeflag + (1|crs_term) 
 	* note: There are two files for this. One codes URM as 0 or 1 (ethnicode cat == 1 or 3) and another shows the different values of ethnicode cat. 
 
-
 * `n_excluded_by_filters` 
 	* for each filtering criteria, gives the number of students that were excluded
 
 * `n_missing_demographics` 
 	* for each demographic group, lists how many students were missing information and were conservatively coded as 0. 
-
-## Model Assumption Checks
-**UPDATE:** Model Assumption Checks no longer required if using robust linear models with `robustlmm` package. 
-
-After a discussion at our SEISMIC Working Group meeting (11/8/2021), we discussed a need to check model assumptions and residuals. This includes checks of residual normality and heteroscedascity. Montserrat created code to check model assumptions, stored in the **/model _assumption _checks** folder. 
-
-* Code: `/model_assumption_checks/assumptions_for_original_models.r`
-* Directions on how to run / interpret code: `/model_assumption_checks/Running-and-interpreting-assumptions.pdf`
-             
