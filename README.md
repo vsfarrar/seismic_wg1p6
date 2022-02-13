@@ -144,8 +144,17 @@ Course-level variables
 	* numgrade ~ cum prior gpa + female + firstgen + ethnicode cat + transfer + international + lowincomeflag + (1|crs_term) 
 	* note: There are two files for this. One codes URM as 0 or 1 (ethnicode cat == 1 or 3) and another shows the different values of ethnicode cat. 
 
+* `mixed_model_outputs_main_effects_robust`
+	* same as above, but using robust linear mixed models (robustlmm package) 
+	
+* `mixed_model_outputs_noGPAO_robust`
+	* calculates the main effects using robust estimation but without controlling for GPAO 
+
 * `n_excluded_by_filters` 
 	* for each filtering criteria, gives the number of students that were excluded
 
 * `n_missing_demographics` 
 	* for each demographic group, lists how many students were missing information and were conservatively coded as 0. 
+
+* `summary_stats_by_advantages`
+	* parses out demographic variables into a set of "advantages", ranging from 1 - 4 advantages, and gives summary statistics for each advantages group 
