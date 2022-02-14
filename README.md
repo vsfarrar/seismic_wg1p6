@@ -52,6 +52,7 @@ For this project, we are currently using the following inclusion criteria:
 * Include graduate students taking the course if they recieved a letter grade (see above point) 
 * Include both full- and part-time students
 * Include both degree-seeking and non-degree-seeking students (no filter on major either) 
+* Include students even if they are missing some demographic data (our code will interpret these conservatively)
 
 ## Dataset Format and Variables 
 
