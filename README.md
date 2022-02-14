@@ -22,15 +22,40 @@ Working Group meeting notes can be found [here](https://docs.google.com/document
  
  
 #  Project Goal
- This project aims to examine equity gaps associated with race/ethnicity, gender, first-generation status, low income status, international and transfer student status on equity gaps in upper-division science courses at various institutions. Ideally, the code in this repository will be used to analyse data from a variety of courses and institutions. 
+ This project aims to examine equity gaps associated with race/ethnicity, gender, first-generation status, low income status, international and transfer student status on equity gaps in upper-division science courses at various institutions. Ideally, the code in this repository will be used to analyse data from a variety of courses and institutions. We are beginning with two general, upper-division biology courses: Cell Biology and Genetics. 
  
  The goal of this code repository is to provide code that returns summary statistics, demographic information and mixed model outputs for a variety of course datasets.  To run, this code requires the R Statistical language and a dataset formatted in the described SEISMIC format (see more below).
  
 #  How to run Code 
  
 ##  Dataset Preparation 
- 
- Before running the code, ensure your data is formatted in the described SEISMIC format. Please reference this data dictionary for the correct variable names and minimum variables required: 
+
+### Inclusion Criteria
+For this project, we are currently using the following inclusion criteria: 
+* Upper-division Cell Biology and Genetics 
+	* ideally courses required by Biology majors; non-graduate level (though cross-listed is ok) 
+	* Ex. from UC Davis: [BIS 104 and BIS 101](https://ucdavis.pubs.curricunet.com/Catalog/bis-courses-sc) 
+	* Ex. from U Michigan: [MCDB 428](https://webapps.lsa.umich.edu/CrsMaint/Public/CB_PublicBulletin.aspx?crselevel=ug&DEPT=189100) and [BIOLOGY 305](https://webapps.lsa.umich.edu/CrsMaint/Public/CB_PublicBulletin.aspx?crselevel=ug&DEPT=189100)
+* Date range: Fall 2009 - Spring 2019 
+	* Excluding summers (semester system: Fall and Spring only, quarter system: Fall, Winter and Spring only) 
+* Include transfer students 
+	* (We are particularly interested in the impacts on transfer students!)
+* First-time taking the course only
+	* Please exclude students who are re-taking the course for a 2nd + time (i.e. include only their first attempt at the course) 
+* Exclude Honors-only sections of the course
+* Lecture courses only 
+	* Please exclude lab and separate discussion sections of the course 
+* Include numerical grades only
+	* Please exclude students who took as Pass/No Pass (no letter grade)
+	* Exclude students who dropped and withdrew
+	* Include students who failed (D or F) 
+* Include graduate students taking the course if they recieved a letter grade (see above point) 
+* Include both full- and part-time students
+* Include both degree-seeking and non-degree-seeking students (no filter on major either) 
+
+## Dataset Format and Variables 
+
+Before running the code, ensure your data is formatted in the described SEISMIC format. Please reference this data dictionary for the correct variable names and minimum variables required: 
  
 [DataDescription_ SEISMIC_ WG1P6.xlsx](https://docs.google.com/spreadsheets/d/1SJKqRIwwFkYRMk1GrEuAUOixMuZkXgmE/edit?usp=sharing&ouid=101003818724972958035&rtpof=true&sd=true) (Google Drive link; open access) 
  
@@ -106,6 +131,7 @@ Course-level variables
 * begin_ term_ cum_gpa 
 * cum_ prior_ gpa ✻
 * prior_units ✻
+
 
 
 ## Running Code
