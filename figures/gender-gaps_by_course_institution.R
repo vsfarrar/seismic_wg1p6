@@ -21,6 +21,7 @@ all_dem %>%
 # Figure ####
 fig_gendergap <-
 gendergap %>%
+  filter(grade_diff > -3) %>% #exclude wierd Purdue genetics outlier
   ggplot(aes(x = gpa_diff, y= grade_diff, color = institution)) + 
   geom_point(size = 3, alpha = 0.6) + 
   geom_hline(yintercept = 0) + 
@@ -41,9 +42,9 @@ gendergap %>%
   mutate(upperleft = ifelse(sign(gpa_diff) == -1 & sign(grade_diff) == 1, 1,0),
          gender_penalty = ifelse(sign(grade_diff) == 1, 1,0)) %>% #label term in mismatch (upperleft)
   group_by(institution, crs_topic) %>%
-  summarise(n_genderpen = sum(gender_penalty), #no. terms in quadrant
+  summarise(n_upperleft = sum(upperleft), #no. terms in quadrant
             n_crsterm = n()) %>% #total no. terms
-  mutate(perc = round(n_genderpen/n_crsterm, digits =3))
+  mutate(perc = round(n_upperleft/n_crsterm, digits =3))
 
 
 #export plot 

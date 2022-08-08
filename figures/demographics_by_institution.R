@@ -6,6 +6,8 @@ setwd("~/Documents/projects/dber_seismic/data/")
 umdem <- read.csv("~/Google Drive/My Drive/WG1P6/Output files/UMich_demographic_gaps_by_term_2022-06-15.csv") %>% mutate(institution = "UM")  %>% select(-university)
 iudem <- read.csv("~/Google Drive/My Drive/WG1P6/Output files/IUB_demographic_gaps_by_term_2022-03-01.csv") %>% mutate(institution = "IU")
 #ucddem <- read.csv("UCD_demographic_gaps_by_term_2022-02-07.csv") %>% mutate(institution = "UCD") #not up-to-date
+purduedem <- read.csv("~/Google Drive/My Drive/WG1P6/Output files/Purdue_demographic_gaps_by_term_2022-07-11.csv") %>% rename(institution = university) %>%
+  select(X, crs_name:se_prior_gpa, institution)
 
 #UCD: combine BIS101 and BIS104
 bis101 <- read.csv("~/Google Drive/My Drive/WG1P6/Output files/UCD_BIS101_demographic_gaps_by_term_2022-06-05.csv") %>% rename(institution = university)
@@ -14,16 +16,16 @@ bis104 <- read.csv("~/Google Drive/My Drive/WG1P6/Output files/UCD_BIS104_demogr
 ucddem <- rbind(bis101,bis104) %>% select(X, crs_name:se_prior_gpa, institution)
 
 #stack dataframes
-all_dem <- rbind(umdem, iudem, ucddem)
+all_dem <- rbind(umdem, iudem, ucddem, purduedem)
 
 #create course topic variable
 all_dem$crs_topic <- as.factor(all_dem$crs_name)
-levels(all_dem$crs_topic) <- list(CellBio = c("BIOL-L312","MCDB 428","BIS104"),
-                                  Genetics = c("BIS101", "BIOLOGY 305", "BIOL-L311"),
+levels(all_dem$crs_topic) <- list(CellBio = c("BIOL-L312","MCDB 428","BIS104", "Biology III: Cell Structure And Function"),
+                                  Genetics = c("BIS101", "BIOLOGY 305", "BIOL-L311", "Biology IV: Genetics And Molecular Biology"),
                                   Physiology = c("BIOL-P451"))
 
 #export/save dataframe as well
-#write.csv(all_dem, file = paste0("~/Google Drive/My Drive/WG1P6/Output files/all_demographic_gaps_by_term_updatedUMich", current_date,"_.csv"))
+#write.csv(all_dem, file = paste0("~/Google Drive/My Drive/WG1P6/Output files/all_demographic_gaps_by_term_includePurdue", current_date,"_.csv"))
 
 
 #MS TABLE 1 ####
@@ -50,10 +52,6 @@ dem_summary <- all_dem %>% group_by(crs_topic,institution, crs_name, demographic
 #clean up data ####
 
 #clean up a few variable levels
-
-#issues in IU levels of Transfer and URM - discuss with Montse
-dem_summary$value <- recode(dem_summary$value, 
-                            Transfer = "1", URM = "1")
 dem_summary$demographic_var <- recode_factor(dem_summary$demographic_var, lowincomflag = "lowincomeflag")
 
 # Table 2 MS ####
@@ -73,7 +71,7 @@ demo_plot <-
 dem_summary %>%
   filter(value == "1" & crs_topic != "Physiology") %>%
 ggplot(aes(x = demographic_var, y = perc, fill = institution)) + 
-  geom_col(stat = "identity", position = position_dodge(0.9), color = "black") +
+  geom_col(position = position_dodge(0.9), color = "black") +
   geom_text(aes(label = round(perc,1)), position = position_dodge(0.9), hjust = -0.25) + 
   labs(x = NULL, y = "Percent of all students (%)", fill = "Institution") + 
   ylim(0,80) + 

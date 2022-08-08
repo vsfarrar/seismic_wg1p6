@@ -3,7 +3,7 @@ source("~/Documents/GitHub/seismic_wg1p6/figures/seismic_figures_setup.R")
 
 #import data ####
 #source data from demographics_by_institution.R
-all_dem <- read.csv("~/Google Drive/My Drive/WG1P6/Output files/all_demographic_gaps_by_term_2022-06-09_.csv")
+all_dem <- read.csv("~/Google Drive/My Drive/WG1P6/Output files/all_demographic_gaps_by_term_includePurdue2022-07-18_.csv")
 all_dem$demographic_var <- recode_factor(all_dem$demographic_var, lowincomflag = "lowincomeflag")
 
 #create gaps variables for all demographic variables 
