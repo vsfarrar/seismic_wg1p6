@@ -6,6 +6,7 @@
 demog_gaps_offering <- 
 dat_new %>%
   group_by(crs_name) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
+  group_by(crs_name,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
   group_by(crs_name, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
   pivot_longer(cols = c(female,ethniccode_cat,firstgen, lowincomeflag, transfer),
                names_to = "demographic_var",
