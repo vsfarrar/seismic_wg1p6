@@ -32,5 +32,5 @@ dat <- dat %>%
 source("seismic_data_filtering.R")
 source("seismic_gaps_over_time.R") 
 source("seismic_advantages_groups.R")
-source("seismic_model_outputs.R") 
+#source("seismic_model_outputs.R") #currently turned off, robust rlmer models run instead. 
 source("seismic_model_outputs_robust.R") #note: may take >30 min for large datasets. 

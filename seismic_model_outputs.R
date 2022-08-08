@@ -7,8 +7,8 @@ main_fx_all <-
 dat_new %>%
   group_by(university, crs_name) %>%
   nest() %>%
-  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + as.factor(ethniccode_cat) + firstgen + transfer + lowincomeflag + international
-                               + (1|crs_term), data = .)), 
+  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + as.factor(ethniccode_cat) + firstgen + transfer + lowincomeflag + 
+                               + (1|crs_offering), data = .)), 
          results = map(fit, tidy)) %>%
   unnest(results) %>%
   select(-data, -fit) %>%
@@ -21,8 +21,8 @@ main_fx_urm <-
 dat_new %>% 
   group_by(university, crs_name) %>%
   nest()%>%
-  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + urm + firstgen + transfer + lowincomeflag + international
-                               + (1|crs_term), data = .)), 
+  mutate(fit = map(data, ~lmer(numgrade ~ gpao + female + urm + firstgen + transfer + lowincomeflag + 
+                               + (1|crs_offering), data = .)), 
          results = map(fit, tidy)) %>%
   unnest(results) %>%
   select(-data, -fit) %>%
