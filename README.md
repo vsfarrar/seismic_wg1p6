@@ -161,6 +161,8 @@ Course-level variables
 
 # Results Returned
 
+12 .csv files should be returned by the script: 
+
 * `advantages_by_offering`
 	* parses out demographic variables into a set of "advantages", ranging from 1 - 4 advantages, and gives summary statistics for each advantages group 
 	
@@ -197,6 +199,9 @@ Course-level variables
 	
 * `sai_plot_by_transfer`
 	* same as sai_plot, but disaggregates advantages by transfer status
+
+# Workflow Diagram 
+![seismic-wg1p6_workflow_diagram_2022-08-11](https://user-images.githubusercontent.com/23200201/184215010-0437ab73-e0d1-4acd-9fef-37d7a55a5207.png)
 
 
 	
