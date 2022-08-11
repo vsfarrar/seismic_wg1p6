@@ -94,8 +94,8 @@ sai_avg_by_transfer <-
             se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T))
 
 #export data to csv
-write.csv(advantages_by_offering, paste0(institution,"advantages_by_offering",current_date, ".csv"))
-write.csv(sai_by_offering, paste0(institution,"sai_by_offering",current_date, ".csv"))
-write.csv(sai_avg_plot, paste0(institution,"sai_plot",current_date, ".csv"))
-write.csv(sai_avg_by_gender, paste0(institution,"sai_plot_by_gender",current_date, ".csv"))
-write.csv(sai_avg_by_transfer, paste0(institution,"sai_plot_by_transfer",current_date, ".csv"))
+write.csv(advantages_by_offering, paste0(institution,"advantages_by_offering_",current_date, ".csv"))
+write.csv(sai_by_offering, paste0(institution,"sai_by_offering_",current_date, ".csv"))
+write.csv(sai_avg_plot, paste0(institution,"sai_plot_",current_date, ".csv"))
+write.csv(sai_avg_by_gender, paste0(institution,"sai_plot_by_gender_",current_date, ".csv"))
+write.csv(sai_avg_by_transfer, paste0(institution,"sai_plot_by_transfer_",current_date, ".csv"))
