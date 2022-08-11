@@ -13,7 +13,9 @@ dat_new <-
 #exclude summer terms 
   filter(summer_crs == 0) %>%
 #add university to dataframe
-  mutate(university = institution)
+  mutate(university = institution,
+#create an offering variable (concatenate term + section)
+         crs_offering = paste(crs_term, crs_section,sep = "_"))
 
 #Create a summary report of students that were filtered out ####
 
