@@ -92,6 +92,7 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * gpao
 * crs_name
 * crs_term
+* crs_section
 * crs_retake
 * summer_crs
 
@@ -104,12 +105,11 @@ Student-level variables
 * st_id 
 * firstgen
 * ethniccode
-* ethniccode_cat
+* ethniccode_cat (*note: we define this differently than other Measurements working groups, see Data Description*) 
 * urm
 * female
 * lowincomflag
 * transfer
-* international
 * grad_gpa ✻
 * grad_major ✻
 * grad_term ✻
@@ -125,6 +125,7 @@ Course-level variables
 * is_dfw
 * crs_retake
 * crs_term
+* crs_section
 * summer_crs
 * gpao
 * crs_component
@@ -160,22 +161,24 @@ Course-level variables
 
 # Results Returned
 
-* `demographic_gaps_by_term`
-	* for each demographic group (female, firstgen, ethnicode_cat, transfer, lowincomeflag, international) it returns the mean and sem grade for each group for each term of each course, as well as the number of students in that group. 
+* `advantages_by_offering`
+	* parses out demographic variables into a set of "advantages", ranging from 1 - 4 advantages, and gives summary statistics for each advantages group 
+	
+* `demographic_gaps_by_offering`
+	* for each demographic group (female, firstgen, ethnicode_cat, transfer, lowincomeflag, international) it returns the mean and sem grade for each group for each offering (term + section) of each course, as well as the number of students in that group. 
 
-* `mean_gpa_grade_difference_by_term` 
-	* returns the mean and SEM difference between 0 and 1 for each demographic group in terms of prior gpa and grade for each offering of each course. 
+* `mean_gpa_grade_difference_by_offering` 
+	* returns the mean and SEM difference between 0 and 1 for demographic groups (gender,firstgen, transfer, lowincomeflag) in terms of prior gpa, GPAO and grade for each offering of each course. 
 
-* `mixed_model_outputs_main_effects` 
-	* for each course, returns the beta estimates and SEM for a main effects only model 
-	* numgrade ~ cum prior gpa + female + firstgen + ethnicode cat + transfer + international + lowincomeflag + (1|crs_term) 
-	* note: There are two files for this. One codes URM as 0 or 1 (ethnicode cat == 1 or 3) and another shows the different values of ethnicode cat. 
+* `mean_gpa_grade_diff_offering_ethniccode` 
+	* returns the mean and SEM difference between each level of ethnicity categories for each offering of each course. 
 
 * `mixed_model_outputs_main_effects_robust`
-	* same as above, but using robust linear mixed models (robustlmm package) 
+	* for each course, returns the beta estimates and SEM for a main effects only multilevel model using robust linear mixed models (robustlmm package) 
+	* numgrade ~ GPAO + female + firstgen + ethnicode cat + transfer + lowincomeflag + (1|crs_offering) 
 	
 * `mixed_model_outputs_noGPAO_robust`
-	* calculates the main effects using robust estimation but without controlling for GPAO 
+	* calculates the main effects above using robust estimation but without controlling for GPAO 
 
 * `n_excluded_by_filters` 
 	* for each filtering criteria, gives the number of students that were excluded
@@ -183,5 +186,18 @@ Course-level variables
 * `n_missing_demographics` 
 	* for each demographic group, lists how many students were missing information and were conservatively coded as 0. 
 
-* `summary_stats_by_advantages`
-	* parses out demographic variables into a set of "advantages", ranging from 1 - 4 advantages, and gives summary statistics for each advantages group 
+* `sai_by_offering`
+	* calculates Systemic Advantage Index (SAI; see Sarah Castle's work in WG1P1) and reports summary statistics for each group: n, mean + SEM course grades, GPAO, and grade anomaly for each offering of each course. 
+	
+* `sai_plot`
+	* calculates SAI on average for each course overall for a general SAI plot comparing all courses across universities. 
+	
+* `sai_plot_by_gender`
+	* same as sai_plot, but disaggregates advantages by gender 
+	
+* `sai_plot_by_transfer`
+	* same as sai_plot, but disaggregates advantages by transfer status
+
+
+	
+
