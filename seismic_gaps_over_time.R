@@ -45,7 +45,7 @@ dat_new %>%
          gpao_diff_01 = mean_gpao_0 - mean_gpao_1)
 
 #export to a table 
-write.csv(grade_gpa_diff, paste0(institution,"_mean_grade_gpa_differences_by_term_",current_date,".csv"))
+write.csv(grade_gpa_diff, paste0(institution,"_mean_grade_gpa_differences_by_offering_",current_date,".csv"))
 
 
 #### ETHNICCODE_CAT: MEAN DIFFERENCES BY TERM ####
