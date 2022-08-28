@@ -105,7 +105,8 @@ Student-level variables
 * st_id 
 * firstgen
 * ethniccode
-* ethniccode_cat (*note: we define this differently than other Measurements working groups, see Data Description*) 
+* ethniccode_cat 
+* international
 * urm
 * female
 * lowincomflag
@@ -133,6 +134,7 @@ Course-level variables
 * begin_ term_ cum_gpa 
 * cum_ prior_ gpa ✻
 * prior_units ✻
+* class_standing *
 
 
 
@@ -199,6 +201,9 @@ Course-level variables
 	
 * `sai_plot_by_transfer`
 	* same as sai_plot, but disaggregates advantages by transfer status
+	
+*  \international-excluded
+	* creates a folder with all of the above figure analyses, but with international students completely excluded from the analysis. The number of international students excluded can be found in the `n_missing_demographics` file. 
 
 # Workflow Diagram 
 ![seismic-wg1p6_workflow_diagram_2022-08-11](https://user-images.githubusercontent.com/23200201/184215010-0437ab73-e0d1-4acd-9fef-37d7a55a5207.png)
