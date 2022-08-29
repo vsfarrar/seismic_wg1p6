@@ -74,7 +74,7 @@ See the below example:
 
 For an example that includes all the "Bare Minimum" variables, see here: [Example dataset](https://docs.google.com/spreadsheets/d/14yD7tf09ZbpKUBF2KIkqPzPLpyKW9BeQyEd5zlR7EUM/edit?usp=sharing) (Google Doc; *open access*) 
 
-### Bare minimum variables for running code:
+### Bare-minimum required variables for running code:
 
 Of the below required variables, this lists the *bare minimum* to run the code as it stands in this repository. Without these variables, the code will not run. 
 Please refer to the DataDescription and Project meeting notes above for details of how these variables are defined. 
@@ -95,8 +95,11 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * crs_section
 * crs_retake
 * summer_crs
+* class_standing
 
-### Required variables
+### Recommended variables
+
+While not all of these variables are currently used by the code, it would be ideal to have them in datasets to conduct any necessary follow-up analyses. 
 
 ✻ = variables specific to Project 6, not in original Working group 1 Data Description
 
@@ -136,8 +139,6 @@ Course-level variables
 * prior_units ✻
 * class_standing *
 
-
-
 ## Running Code
 
 1. Download/ copy all scripts to a directory/folder on your computer. Ensure the properly-formatted dataset is also stored in this folder as a .csv.
@@ -163,7 +164,11 @@ Course-level variables
 
 # Results Returned
 
-12 .csv files should be returned by the script: 
+22 .csv files should be returned by the script: 
+
+*  **\international-excluded**
+	* creates a folder with all of the above figure analyses, but with international students completely excluded from the analysis. The number of international students excluded can be found in the `n_missing_demographics` file. 
+	* should contain 10 .csv files with the suffix `_no-international`
 
 * `advantages_by_offering`
 	* parses out demographic variables into a set of "advantages", ranging from 1 - 4 advantages, and gives summary statistics for each advantages group 
@@ -202,8 +207,6 @@ Course-level variables
 * `sai_plot_by_transfer`
 	* same as sai_plot, but disaggregates advantages by transfer status
 	
-*  \international-excluded
-	* creates a folder with all of the above figure analyses, but with international students completely excluded from the analysis. The number of international students excluded can be found in the `n_missing_demographics` file. 
 
 # Workflow Diagram 
 ![seismic-wg1p6_workflow_diagram_2022-08-11](https://user-images.githubusercontent.com/23200201/184215010-0437ab73-e0d1-4acd-9fef-37d7a55a5207.png)
