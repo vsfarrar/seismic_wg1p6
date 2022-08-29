@@ -209,7 +209,8 @@ Course-level variables
 	
 
 # Workflow Diagram 
-![seismic-wg1p6_workflow_diagram_2022-08-11](https://user-images.githubusercontent.com/23200201/184215010-0437ab73-e0d1-4acd-9fef-37d7a55a5207.png)
+![seismic-wg1p6_workflow_diagram_2022-08-29](https://user-images.githubusercontent.com/23200201/187312805-b51f7dc0-68ee-401b-8f06-5ed4995a9fec.png)
+
 
 
 	
