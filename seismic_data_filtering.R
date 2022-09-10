@@ -62,10 +62,10 @@ colnames(missing_demog) <- c("","n") #edit column names
 write.csv(missing_demog, paste0(institution,"_n_missing_demographics_",current_date,".csv"))
 
 #Convert Demographics to 0 (conservative, instead of excluding)
-dat_new <- 
-dat_new %>% 
-tidyr::replace_na(list(ethniccode_cat = 0, firstgen = 0, international = 0,
-                       transfer = 0, lowincomeflag = 0, urm = 0))
+dat_new <-
+  dat_new %>%
+  tidyr::replace_na(list(ethniccode_cat = "0", firstgen = "0", international = "0",
+                         transfer = "0", lowincomeflag = "0", urm = "0"))
 
 #International Student Processing ####
 
