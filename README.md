@@ -142,6 +142,11 @@ Course-level variables
 ## Running Code
 
 1. Download/ copy all scripts to a directory/folder on your computer. Ensure the properly-formatted dataset is also stored in this folder as a .csv.
+
+	To download without using GitHub locally or GitHub desktop, press the green "Code" button at the top left of this page and then select "Download Zip". 
+	
+	<img width="400" alt="Screen Shot 2022-09-12 at 12 15 02 PM" src="https://user-images.githubusercontent.com/23200201/189737474-4b583835-4522-46f5-b775-a4200d11eefb.png">
+
 2. The `seismic_setup.R` will be the only script you need to edit. At the top of the script, change the working directory to point to the folder where your dataset is located. This is also the folder where output files will be saved to. 
 
 	`setwd <- c("~/Documents/your-folder/subfolder/")`
