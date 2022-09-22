@@ -88,7 +88,7 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * transfer
 * lowincomeflag
 * numgrade
-* cumpriorgpa
+* cum_prior_gpa
 * gpao
 * crs_name
 * crs_term
