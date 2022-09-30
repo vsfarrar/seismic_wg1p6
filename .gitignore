@@ -38,3 +38,6 @@ rsconnect/
 *.csv
 *.tsv
 *.tab
+
+# Ignore Model Assumptions code for now 
+/model_assumption_checks

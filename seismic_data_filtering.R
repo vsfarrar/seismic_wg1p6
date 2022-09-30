@@ -11,7 +11,11 @@ dat_new <-
 #exclude students whose gender is not "M" or "F", or is missing 
   filter(female != 2 & !is.na(female)) %>%
 #exclude summer terms 
-  filter(summer_crs == 0)
+  filter(summer_crs == 0) %>%
+#add university to dataframe
+  mutate(university = institution,
+#create an offering variable (concatenate term + section)
+         crs_offering = paste(crs_term, crs_section,sep = "_"))
 
 #Create a summary report of students that were filtered out ####
 
@@ -19,11 +23,17 @@ filtered_out <-
   #antijoin returns all entries filtered out 
 anti_join(dat,dat_new) %>%
   #group by filter that removed them
-  count(retaking_course = crs_retake == 1, 
+  count(summer_course = (summer_crs == 1), 
+        retaking_course = (crs_retake == 1), 
         missing_numgrade = is.na(numgrade), 
         missing_cum_prior_gpa = is.na(cum_prior_gpa), 
         missing_gpao = is.na(gpao),
         missing_or_nonbinary_gender = (female==2 | is.na(female)))
+
+#confirm that all filtered out cases are listed in the filtered_out dataframe
+ifelse(nrow(anti_join(dat,dat_new)) == sum(filtered_out$n),
+       print("All filtered cases are accounted for"),
+       print("ISSUE: Some filtered cases are not accounted for."))
 
 #export the filtered out data report
 write.csv(filtered_out, paste0(institution,"_n_excluded_by_filters",current_date,".csv"))
@@ -36,7 +46,9 @@ write.csv(filtered_out, paste0(institution,"_n_excluded_by_filters",current_date
 
 missing_demog <- 
 dat_new %>%
- summarise(other_ethniccode_cat = sum(ethniccode_cat==3, na.rm = T),
+ summarise(ethniccode_cat3 = sum(ethniccode_cat==3, na.rm = T),
+           ethniccode_cat4 = sum(ethniccode_cat == 4, na.rm = T),
+           international = sum(international == 1, na.rm = T),
    missing_ethniccode_cat = sum(is.na(ethniccode_cat)),
         missing_firstgen = sum(is.na(firstgen)),
         missing_international = sum(is.na(international)),
@@ -50,7 +62,24 @@ colnames(missing_demog) <- c("","n") #edit column names
 write.csv(missing_demog, paste0(institution,"_n_missing_demographics_",current_date,".csv"))
 
 #Convert Demographics to 0 (conservative, instead of excluding)
-dat_new <- 
-dat_new %>% 
-tidyr::replace_na(list(ethniccode_cat = 0, firstgen = 0, international = 0,
-                       transfer = 0, lowincomeflag = 0, urm = 0))
+dat_new <-
+  dat_new %>%
+  tidyr::replace_na(list(ethniccode_cat = "0", firstgen = "0", international = "0",
+                         transfer = "0", lowincomeflag = "0", urm = "0"))
+
+#International Student Processing ####
+
+#1)International students coded conservatively 
+#for all other demographic variables of interest EXCEPT gender
+#e.g. ethniccode_cat becomes 0 (white) for all international students
+dat_int <- 
+  dat_new %>%
+  mutate(across(c(ethniccode_cat, firstgen,transfer, lowincomeflag, urm), 
+            ~ifelse(international == 1, 0, .)))
+
+#2)International students excluded completely from analysis 
+#removed from sample size (n excluded can be found in the missing_demog file)
+dat_noInt <- 
+  dat_new %>%
+  filter(international != 1)
+
