@@ -16,11 +16,15 @@ Code initially created as part of the SEISMIC Summer Measurements Fellowship 202
 [Ben Koester](mailto:bkoester@umich.edu) | University of Michigan | Project Support |
 [Emily Bonem](mailto:ebonem@purdue.edu) | Purdue University | Analysis Lead | 
 [Chantal Levesque-Bristol](mailto:cbristol@purdue.edu)| Purdue University| Project Support |
+[Chris Mead](mailto:cjmead1@asu.edu) | Arizona State University | Analysis Lead | 
 
 Working Group meeting notes can be found [here](https://docs.google.com/document/d/1VW4SUUVVpLWOKNFZiq5_D8Jlr0es731bYSH4elqOhn8/edit#).
 (*permissions required*)
- 
- 
+
+<h4>
+<img src="https://user-images.githubusercontent.com/23200201/193341444-d3a9714d-49bd-4f17-9f62-b5e5b9b8b4f4.png" width="25" height="25" />
+Communicate with the team on the <a href= "seismic-team.slack.com">SEISMIC Project Slack </a> Channel: #wg1-p6-upper-div </h4>
+
 #  Project Goal
  This project aims to examine equity gaps associated with race/ethnicity, gender, first-generation status, low income status, international and transfer student status on equity gaps in upper-division science courses at various institutions. Ideally, the code in this repository will be used to analyse data from a variety of courses and institutions. We are beginning with two general, upper-division biology courses: Cell Biology and Genetics. 
  
@@ -97,47 +101,6 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * summer_crs
 * class_standing
 
-### Recommended variables
-
-While not all of these variables are currently used by the code, it would be ideal to have them in datasets to conduct any necessary follow-up analyses. 
-
-✻ = variables specific to Project 6, not in original Working group 1 Data Description
-
-Student-level variables
-
-* st_id 
-* firstgen
-* ethniccode
-* ethniccode_cat 
-* international
-* urm
-* female
-* lowincomflag
-* transfer
-* grad_gpa ✻
-* grad_major ✻
-* grad_term ✻
-* admit_term ✻
-* time_ to_grad ✻
-
-Course-level variables 
-
-* crs_sbj
-* crs_name
-* numgrade
-* numgrade_w
-* is_dfw
-* crs_retake
-* crs_term
-* crs_section
-* summer_crs
-* gpao
-* crs_component
-* current_major
-* begin_ term_ cum_gpa 
-* cum_ prior_ gpa ✻
-* prior_units ✻
-* class_standing *
 
 ## Running Code
 
