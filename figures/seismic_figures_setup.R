@@ -21,6 +21,9 @@ school_colors <- c("IU" = "#990000" , "UCD" = "#002855", "UM" = "#FFCB05", "Purd
 school_colors2 <- c("IU" = "#990000" , "UCD" = "#002855", "UM" = "#A28204", "Purdue" = "#373A36") #for points
 #got official color codes from: teamcolorcodes.com :)
 
+#colorblind qualitative pallette
+deid_colors <- c('#1b9e77','#d95f02','#7570b3','#e7298a') #deidentified colors
+
 #Functions ####
 
 #grab current date using Sys.Date()

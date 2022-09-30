@@ -2,7 +2,7 @@ source(file = "~/Documents/GitHub/seismic_wg1p6/figures/seismic_figures_setup.R"
 
 #Data downloaded from Google Drive > Shared with Me > WG1P6 > Output files
 
-setwd("~/Google Drive/My Drive/WG1P6/Output files/")
+setwd("~/Google Drive/My Drive/WG1P6/Output files/Archived output files/")
 #import data
 umich <- read.csv("UMich_mixed_model_outputs_main_effects_robust_2022-06-15.csv") %>% select(-X) %>%
   mutate(institution = "UM")
@@ -77,11 +77,11 @@ fig2E <- p[[7]] + ggtitle("Ethnicity: BIPOC")+ ylim(-0.4,0.3) + splits
 fig2F <- p[[8]] + ggtitle("Ethnicity: Asian")+ ylim(-0.4,0.3) + splits
 
 #combine all together with cowplot
-fig2_panels <- plot_grid(fig2A, fig2B, fig2C, fig2D, fig2E, fig2F, labels = "AUTO", nrow = 2)
+fig2_panels <- cowplot::plot_grid(fig2A, fig2B, fig2C, fig2D, fig2E, fig2F, labels = "AUTO", nrow = 2)
 
-fig2_legend <- get_legend(fig2)
+fig2_legend <- cowplot::get_legend(fig2)
 
-fig2_final <- plot_grid(fig2_panels, fig2_legend, rel_widths = c(1,0.2), labels = NULL, ncol = 2)
+fig2_final <- cowplot::plot_grid(fig2_panels, fig2_legend, rel_widths = c(1,0.2), labels = NULL, ncol = 2)
 
 ggsave(paste0("~/Google Drive/My Drive/WG1P6/Figures Tables/SEISMIC-WG1P6_MS_Fig2_model_mainfx_",current_date,".png"),
        fig2_final, width =7 , height =5, units = "in")

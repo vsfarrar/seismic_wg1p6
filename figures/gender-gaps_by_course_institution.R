@@ -15,21 +15,27 @@ all_dem %>%
   filter(crs_topic != "Physiology") %>%
   pivot_wider(names_from = value, values_from = c(mean_grade, mean_prior_gpa)) %>%
   #calculate differences
-  mutate(grade_diff = mean_grade_0 - mean_grade_1,
-         gpa_diff = mean_prior_gpa_0 - mean_prior_gpa_1)
+  mutate(grade_diff = mean_grade_1 - mean_grade_0,
+         gpa_diff = mean_prior_gpa_1 - mean_prior_gpa_0) %>%
+  mutate(mismatch = ifelse(sign(gpa_diff) == 1 & sign(grade_diff) == -1, 1,0), #higher GPA but lower grade mismatches
+         gender_penalty = ifelse(sign(grade_diff) == 1, 1,0)) #general gender penalty (all bottom half of plot)
 
 # Figure ####
 fig_gendergap <-
 gendergap %>%
-  filter(grade_diff > -3) %>% #exclude wierd Purdue genetics outlier
-  ggplot(aes(x = gpa_diff, y= grade_diff, color = institution)) + 
-  geom_point(size = 3, alpha = 0.6) + 
+  filter(grade_diff < 3) %>% #exclude wierd Purdue genetics outlier
+  mutate(institution2 = recode_factor(institution, "IU"="A", "Purdue" = "B", "UCD"= "C","UM" = "D")) %>% #de-identify
+  ggplot(aes(x = gpa_diff, y= grade_diff, color = institution2)) + 
+  #geom_point(size = 3, alpha = 0.8) +
+  geom_point(aes(alpha = mismatch), size = 3) + #toggle: alpha as aes to highlight mismatches
   geom_hline(yintercept = 0) + 
   geom_vline(xintercept = 0) + 
-  labs(x = "Prior GPA Difference (Men-Women)", y = "Course Grade Difference \n(Men-Women)",
+  labs(x = "Prior GPA Difference (W-M)", y = "Course Grade Difference \n(W-M)",
        color = "Institution") + 
-  scale_color_manual(values = school_colors2) +
-  facet_grid(rows = vars(crs_topic), cols = vars(institution)) + 
+  scale_color_manual(values = deid_colors, labels = c("A", "B", "C", "D")) + #de-identify institutions
+  scale_alpha(range = c(0.15, 0.9)) +
+  facet_grid(~crs_topic) +
+  #facet_grid(rows = vars(crs_topic), cols = vars(institution2)) + #toggle: by institutions and topic 
   theme_seismic + 
   theme(legend.position = "bottom") 
 
@@ -38,14 +44,18 @@ gendergap %>%
 #ISSUE: if using facet_grid, will need to manually annotate in Powerpoint or other software.
 
   gendergap %>%
-  #calculate differences
-  mutate(upperleft = ifelse(sign(gpa_diff) == -1 & sign(grade_diff) == 1, 1,0),
-         gender_penalty = ifelse(sign(grade_diff) == 1, 1,0)) %>% #label term in mismatch (upperleft)
+  #calculate differences%>% #label term in mismatch (upperleft)
   group_by(institution, crs_topic) %>%
-  summarise(n_upperleft = sum(upperleft), #no. terms in quadrant
+  summarise(n_mismatch = sum(mismatch), #no. terms in quadrant
             n_crsterm = n()) %>% #total no. terms
-  mutate(perc = round(n_upperleft/n_crsterm, digits =3))
+  mutate(perc = round(n_mismatch/n_crsterm, digits =3))
 
+gendergap %>%
+  #calculate differences%>% #label term in mismatch (upperleft)
+  group_by(crs_topic) %>%
+  summarise(n_mismatch = sum(mismatch), #no. terms in quadrant
+            n_crsterm = n()) %>% #total no. terms
+  mutate(perc = round(n_mismatch/n_crsterm, digits =3))
 
 #export plot 
 ggsave(filename = paste0("~/Google Drive/My Drive/WG1P6/Figures Tables/SEISMIC-WG1P6_MS_FigX_gender-gaps_",current_date,".png"),
