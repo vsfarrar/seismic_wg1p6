@@ -1,6 +1,6 @@
 #Data Processing
   #currently using data that includes international students, coded conservatively
-source(file = "~/Documents/GitHub/seismic_wg1p6/figures/seismic_figures_setup.R")
+source(file = "~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
 
 #Model Estimates #### 
 setwd("~/Google Drive/My Drive/WG1P6/Output files/")
