@@ -11,7 +11,39 @@ purduesai <-read.csv("Purdue_sai_plot_2022-09-26.csv")
 umsai <- read.csv("UMich_sai_plot_2022-09-19.csv")
 ucdsai<- read.csv("UCD_sai_plot_2022-09-27.csv")
 
-sai <- rbind(asusai, iusai, purduesai, umsai, ucdsai)
+sai1 <- rbind(asusai, iusai, purduesai, umsai, ucdsai)
+sai1$category <- "all"
+sai1$female <- NA
+sai1$transfer <-NA
+
+#sai by gender
+  #1=ASU, 2=IU, 3=Purdue, 4=UCD, 5=UM
+
+sai1.2 <- read.csv("ASUsai_plot_by_gender_2022-09-27.csv")
+sai2.2 <- read.csv("IUBsai_plot_by_gender_2022-09-08.csv")
+sai3.2 <- read.csv("Purdue_sai_plot_by_gender_2022-09-26.csv")
+sai5.2 <- read.csv("UMichsai_plot_by_gender_2022-09-19.csv")
+sai4.2 <- read.csv("UCD_sai_plot_by_gender_2022-09-27.csv")
+
+sai2 <- rbind(sai1.2, sai2.2, sai3.2, sai4.2, sai5.2)
+sai2$category <- "gender"
+sai2$transfer <- NA
+
+#sai by transfer
+#1=ASU, 2=IU, 3=Purdue, 4=UCD, 5=UM
+
+sai1.3 <- read.csv("ASUsai_plot_by_transfer_2022-09-27.csv")
+sai2.3 <- read.csv("IUBsai_plot_by_transfer_2022-09-08.csv")
+sai3.3 <- read.csv("Purdue_sai_plot_by_transfer_2022-09-26.csv")
+sai5.3 <- read.csv("UMichsai_plot_by_transfer_2022-09-19.csv")
+sai4.3 <- read.csv("UCD_sai_plot_by_transfer_2022-09-27.csv")
+
+sai3 <- rbind(sai1.3, sai2.3, sai3.3, sai4.3, sai5.3)
+sai3$category <- "transfer"
+sai3$female <- NA
+
+#all SAI 
+sai <- rbind(sai1, sai2, sai3)
 
 #create course topic shared variable 
 sai$crs_topic <- as.factor(sai$crs_name)
@@ -25,4 +57,4 @@ sai$university = recode_factor(sai$university,
 
 
 #export processed data
-#write.csv(sai, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_plot_data", current_date,".csv"))
+write.csv(sai, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_plot_data", current_date,".csv"))
