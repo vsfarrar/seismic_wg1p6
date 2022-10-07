@@ -25,7 +25,7 @@ all_models %>%
        shape = NULL) +
   scale_color_manual(values = deid_colors, labels = deid_labels) + 
   scale_fill_discrete(labels = c("no", "yes")) +
-  scale_x_discrete(labels = c("raw", "with GPAO")) + 
+  scale_x_discrete(labels = c("no GPAO", "GPAO")) + 
   facet_wrap(~variable, ncol = 5) + 
   theme_seismic
 
