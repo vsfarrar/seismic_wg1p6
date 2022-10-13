@@ -69,3 +69,40 @@ filter(international_included == 1) %>%
         panel.grid.major.x = element_blank(),  #mask horizontal gridlines
         panel.grid.minor.x = element_blank())
  
+#delta betas overview ####
+  #goal: show an overview of how betas change when GPAO is and is not added,
+  #aggregated across universities and courses
+
+delta_betas <-
+betas %>% 
+  filter(international_included == 1) %>%
+  mutate(variable = factor(variable, levels = c("GPAO","Female","EthnicityBIPOC","EthnicityAsianAsianAmerican","EthnicityOther",
+                                                "FirstGen","LowIncome","Transfer"))) %>%
+  select(university, crs_topic, variable, GPAO_included, estimate, s.sig)%>%
+  pivot_wider(names_from = GPAO_included,
+              values_from = c(estimate, s.sig)) %>%
+  mutate(diff_beta = estimate_1 - estimate_0, 
+         sig_changed = ifelse(s.sig_1==s.sig_0, 0, 1))
+
+#plot
+delta_betas %>%
+  filter(!(variable %in% c("GPAO","EthnicityAsianAsianAmerican", "EthnicityOther"))) %>% 
+  ggplot(aes(x = variable, y = -diff_beta)) +
+    geom_point(aes(color = university, shape = crs_topic, group = crs_topic), 
+              size = 3) + 
+    geom_boxplot(#aes(fill = crs_topic), 
+                 alpha = 0.2, position = position_dodge(0.9)) + 
+    geom_hline(yintercept = 0) + 
+    #facet_wrap(~crs_topic) + 
+  labs(x = NULL, y = "β(No GPAO in model) - β(GPAO)", 
+       color = "Institution", fill = NULL, shape = NULL) + 
+  scale_color_manual(labels = deid_labels, values = deid_colors) + 
+  scale_fill_manual(values = c("white","black")) +
+  theme_minimal(base_size = 14) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text = element_text(color = "black"), 
+        strip.text = element_text(color = "black"), 
+        panel.border = element_rect(color = "black", fill = NA, size = 1), 
+        strip.background = element_rect(color = "black", size = 1), 
+        panel.grid.major.x = element_blank(),  #mask horizontal gridlines
+        panel.grid.minor.x = element_blank())
