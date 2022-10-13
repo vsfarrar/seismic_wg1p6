@@ -56,5 +56,28 @@ sai$university = recode_factor(sai$university,
                                   "IUB" = "IU", "UMich" = "UM")
 
 
-#export processed data
+#SAI by offering ####
+
+sai1.4 <- read.csv("ASUsai_by_offering_2022-09-27.csv")
+sai2.4 <- read.csv("IUBsai_by_offering_2022-09-08.csv")
+sai3.4 <- read.csv("Purdue_sai_by_offering_2022-09-26.csv")
+sai5.4 <- read.csv("UMich_sai_by_offering_2022-09-19.csv")
+sai4.4 <- read.csv("UCD_sai_by_offering_2022-09-27.csv")
+
+sai_offerings <- dplyr::bind_rows(sai1.4, sai2.4, sai3.4, sai4.4, sai5.4)
+
+
+#create course topic shared variable 
+sai_offerings$crs_topic <- as.factor(sai_offerings$crs_name)
+levels(sai_offerings$crs_topic) <- list(CellBio = c("BIOL-L312","MCDB 428","BIS104","Biology III: Cell Structure And Function", "BIO 353"), 
+                              Genetics = c("BIS101", "BIOLOGY 305", "BIOL-L311","Biology IV: Genetics And Molecular Biology", "BIO 340"),
+                              Physiology = c("BIOL-P451"))
+
+#recode universities
+sai_offerings$university = recode_factor(sai_offerings$university, 
+                               "IUB" = "IU", "UMich" = "UM")
+
+
+#export processed data ####
 write.csv(sai, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_plot_data", current_date,".csv"))
+write.csv(sai_offerings, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_by_offering_", current_date,".csv"))
