@@ -33,6 +33,10 @@ all_gaps %>%
   ggplot(aes(x = demographic_var, y = -difference, color = metric)) + 
   #geom_hline(yintercept = 0) + 
   geom_boxplot() + 
-  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = 0) + 
+  scale_color_discrete(labels = c("Raw grade","Grade anomaly (grade-GPAO)")) +
+  scale_x_discrete(labels = c("PEER","Female","FirstGen", "LowSES","Transfer")) +
+  labs(x = NULL, y = "Difference between groups", color = NULL) + 
   facet_wrap(~crs_topic) +
-  theme_seismic
+  theme_seismic + 
+  theme(legend.position = "bottom")
