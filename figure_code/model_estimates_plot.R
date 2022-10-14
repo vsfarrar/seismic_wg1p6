@@ -1,12 +1,20 @@
 #currently: international included, coded conservatively
 
+#setup 
+  #load data
+betas <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_model_estimates_2022-09-30.csv")
+  #source functions
+source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
+
+#cleanup variable levels before plots
+betas$variable <- fct_recode(betas$variable, PEER = "EthnicityBIPOC", LowSES = "LowIncome", Woman = "Female")
+betas$variable <- fct_relevel(betas$variable, "Woman", after = 1)
+
 #models with GPAO ####
 #plot model estimates with GPAO controlled for
 models_GPAO_plot <- 
 betas %>% 
   filter(international_included == 1 & GPAO_included == 1) %>%
-  mutate(variable = factor(variable, levels = c("GPAO","Female","EthnicityBIPOC","EthnicityAsianAsianAmerican","EthnicityOther",
-                                                "FirstGen","LowIncome","Transfer"))) %>%
   filter(!(variable %in% c("GPAO","EthnicityAsianAsianAmerican", "EthnicityOther"))) %>% 
   mutate(significant = ifelse(is.na(s.sig), "not significant", "significant")) %>%
   ggplot(aes(x = crs_topic, y = estimate, color = university)) + 
@@ -37,11 +45,9 @@ betas %>%
 all_models_plot <- 
 betas %>% 
 filter(international_included == 1) %>%
-  mutate(variable = factor(variable, levels = c("GPAO","Female","EthnicityBIPOC","EthnicityAsianAsianAmerican","EthnicityOther",
-                                                "FirstGen","LowIncome","Transfer")),
-         significant = ifelse(is.na(s.sig), 0,1)) %>%
+  mutate(significant = ifelse(is.na(s.sig), 0,1)) %>%
   filter(!(variable %in% c("GPAO","EthnicityAsianAsianAmerican", "EthnicityOther"))) %>% 
-  mutate(uni_topic = paste(university, crs_topic, sep = "_"), 
+  mutate(uni_topic = paste(crs_topic, university, sep = "_"), #crs_topic 1st allows  x axis to be split by course
          sig_topic = paste(crs_topic, significant, sep = "_")) %>%
   mutate(num_uni_topic = as.integer(as.factor(uni_topic))) %>% #convert to numeric for x breks
   ggplot(aes(x = num_uni_topic, y = estimate, 
@@ -51,23 +57,26 @@ filter(international_included == 1) %>%
                     ymax = estimate + std.error), 
                 width = 0.1) + 
   geom_hline(yintercept = 0) +
-  geom_vline(xintercept = c(2.5, 4.5, 6.5, 8.5), color = "black", alpha = 0.2) + 
+  geom_vline(xintercept = 5.5, color = "black", alpha = 0.9) + 
+  annotate(geom = "text", x = 3, y = -0.7, label = "CellBio") + #label course topics
+  annotate(geom = "text", x = 8, y = -0.7, label = "Genetics") + 
   scale_shape_manual(values = c(1,16,2,17),
                      labels = c("CellBio: n.s.", "CellBio: p < 0.05",
                                 "Genetics: n.s.", "Genetics: p < 0.05")) + 
   scale_color_discrete(labels = c("no", "yes")) + 
-  scale_x_continuous(breaks = c(1.5, 3.5, 5.5, 7.5, 9.5), 
-                     labels = deid_labels) +
+  scale_x_continuous(minor_breaks = seq(1,10,by =1),
+                     breaks = seq(1,10, by = 1),
+                     labels = rep(deid_labels,2)) +
   facet_wrap(~variable, ncol = 5) + 
   labs(x = "Institution", y = "Estimate ± SE", 
        shape = NULL, color = "GPAO in model?") + 
-  theme_classic(base_size = 14) + 
+  theme_minimal(base_size = 14) + 
   theme(axis.text = element_text(color = "black"), 
         strip.text = element_text(color = "black"), 
         panel.border = element_rect(color = "black", fill = NA, size = 1), 
-        strip.background = element_rect(color = "black", size = 1), 
-        panel.grid.major.x = element_blank(),  #mask horizontal gridlines
-        panel.grid.minor.x = element_blank())
+        strip.background = element_rect(color = "black", size = 1),
+        panel.grid.major.y = element_blank(),  #mask vertical gridlines
+        panel.grid.minor.y = element_blank()) 
  
 #delta betas overview ####
   #goal: show an overview of how betas change when GPAO is and is not added,
