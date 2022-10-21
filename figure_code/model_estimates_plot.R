@@ -58,8 +58,8 @@ filter(international_included == 1) %>%
                 width = 0.1) + 
   geom_hline(yintercept = 0) +
   geom_vline(xintercept = 5.5, color = "black", alpha = 0.9) + 
-  annotate(geom = "text", x = 3, y = -0.7, label = "CellBio") + #label course topics
-  annotate(geom = "text", x = 8, y = -0.7, label = "Genetics") + 
+  # annotate(geom = "text", x = 3, y = -0.7, label = "CellBio") + #label course topics
+  # annotate(geom = "text", x = 8, y = -0.7, label = "Genetics") + 
   scale_shape_manual(values = c(1,16,2,17),
                      labels = c("CellBio: n.s.", "CellBio: p < 0.05",
                                 "Genetics: n.s.", "Genetics: p < 0.05")) + 
@@ -78,37 +78,6 @@ filter(international_included == 1) %>%
         panel.grid.major.y = element_blank(),  #mask vertical gridlines
         panel.grid.minor.y = element_blank()) 
 
-#improved legend for above plot (to be used in cowplots)
-  #shape: circle white or black for significance
-  #shape: course 
-
-shape_legend <- cowplot::get_legend(
-  data.frame(x = c(1:2), y = c(1:2), shape = c("CellBio", "Genetics")) %>%
-  ggplot(aes(x, y, shape = shape)) + 
-  geom_point(size = 4, fill = "white") + 
-  scale_shape_manual(values = c(21,24), name = "Subject") + 
-  theme_minimal(base_size = 14)
-)
-
-fill_legend <- get_legend(
-  data.frame(x = c(1:2), y = c(1:2), fill = c("n.s.", "p < 0.05")) %>%
-  ggplot(aes(x, y, fill = fill)) + 
-  geom_point(size = 4, pch = 21, color = "black") + 
-  scale_fill_manual(values = c("white", "black"), name = NULL) + 
-  theme_minimal(base_size = 14)
-)
-
-color_legend <- get_legend(
-  data.frame(x = c(1:2), y = c(1:2), color = c("GPAO in model", "no GPAO")) %>%
-    ggplot(aes(x, y, color = color)) + 
-    geom_point(size = 3) + geom_smooth(aes(group = color), se = FALSE) +
-    labs(color = NULL) + 
-    theme_minimal(base_size = 14)
-)
-
-better_legend <- 
-cowplot::plot_grid(shape_legend, fill_legend, color_legend, 
-          nrow = 3, align = "b")
 
 #delta betas overview ####
   #goal: show an overview of how betas change when GPAO is and is not added,
@@ -147,3 +116,4 @@ delta_betas %>%
         strip.background = element_rect(color = "black", size = 1), 
         panel.grid.major.x = element_blank(),  #mask horizontal gridlines
         panel.grid.minor.x = element_blank())
+
