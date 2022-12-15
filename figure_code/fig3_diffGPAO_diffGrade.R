@@ -45,7 +45,8 @@ diff_genetics <-
 
 #calculate percentages for "mismatches" ####
   #note: grade penalties and bonuses are not in the plots, but in this table 
-all_diff %>%
+diff_tab <- 
+  all_diff %>%
   filter(demographic_var != "transfer" & !is.na(grade_diff_01)) %>%
   mutate(grade_penalty1 = ifelse(mean_grade_1 < mean_gpao_1, 1, 0),
          grade_bonus1 = ifelse(mean_grade_1 > mean_gpao_1, 1,0),
@@ -65,6 +66,13 @@ all_diff %>%
             perc_bonus_mismatch = n_gbm/n*100
   ) 
 
+#send percent columns to vectors
+  #1 = PEER, 2 = female, 3 = FG, 4 = LowSES
+  #1-4 = CellBio, 5-8 = Genetics
+
+penaltyperc <- percent(round(diff_tab$perc_penalty_mismatch/100, digits = 3))
+bonusperc <- percent(round(diff_tab$perc_bonus_mismatch/100, digits = 3))
+
 #split facets ####
 cb <- splitFacet(diff_cellbio)
 g <- splitFacet(diff_genetics)
@@ -75,14 +83,30 @@ g <- splitFacet(diff_genetics)
 sharedx <- xlim(-1,2)
 sharedy <- ylim(-2,2)
 
-fig3main <- cowplot::plot_grid(cb[[2]] + labs(subtitle = "CellBio", y = "Women") + sharedx + sharedy, 
-                           g[[2]] + labs(subtitle = "Genetics")+ sharedx + sharedy,
-                           cb[[1]] + labs(y = "PEER")+ sharedx + sharedy, 
-                           g[[1]]+ sharedx + sharedy, 
-                           cb[[3]] + labs(y = "FirstGen")+ sharedx + sharedy, 
-                           g[[3]]+ sharedx + sharedy,
-                           cb[[4]] + labs(y = "LowSES")+ sharedx + sharedy, 
-                           g[[4]]+ sharedx + sharedy,
+fig3main <- cowplot::plot_grid(cb[[2]] + labs(subtitle = "CellBio", y = "Women") + sharedx + sharedy + 
+                                 annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[2],
+                                          vjust = -2, hjust = 1.5), 
+                           g[[2]] + labs(subtitle = "Genetics")+ sharedx + sharedy +
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[6],
+                                      vjust = -2, hjust = 1.5),
+                           cb[[1]] + labs(y = "PEER")+ sharedx + sharedy +
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[1],
+                                      vjust = -2, hjust = 1.5), 
+                           g[[1]]+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[5],
+                                      vjust = -2, hjust = 1.5), 
+                           cb[[3]] + labs(y = "FirstGen")+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[3],
+                                      vjust = -2, hjust = 1.5), 
+                           g[[3]]+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[7],
+                                      vjust = -2, hjust = 1.5),
+                           cb[[4]] + labs(y = "LowSES")+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[4],
+                                      vjust = -2, hjust = 1.5), 
+                           g[[4]]+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[8],
+                                      vjust = -2, hjust = 1.5),
                            labels = "AUTO", nrow = 4, ncol = 2, align = "v", axis = "b")
 
 #get legend for bottom 
@@ -101,6 +125,6 @@ fig3_final <- cowplot::plot_grid(fig3,
                            nrow = 2, align = "h", axis = "l",
                            rel_heights = c(1,0.1))
 
-# #export plot ####
-# ggsave(filename = paste0("figX_all_model_estimates_", current_date, ".png"), path = "figures/",
-#        fig1_final, height = 410/96, width = 1060/96, units = "in", dpi = 300)
+#export plot ####
+ggsave(filename = paste0("fig3_diffGPAO_diffGrade_", current_date, ".png"), path = "figures/",
+       fig3_final, height = 960/96, width = 735/96, units = "in", dpi = 300, bg= "white")
