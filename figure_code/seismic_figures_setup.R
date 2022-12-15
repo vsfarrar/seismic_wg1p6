@@ -6,6 +6,7 @@ library(sjPlot) #tables to word
 library(naniar) #replace_with_na function
 library(plotrix)#std.error
 library(grid) #textGrobs
+library(gridExtra)
 
 #Working Directory ####
 
