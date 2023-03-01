@@ -10,31 +10,45 @@ source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
 
 #SAI by transfer ####
 #issue: some very small sample sizes for transfer students - include?
+#this data is means across all offerings only
 
-sai_by_transfer <- 
+sai_by_transfer <-
   sai %>%
   filter(category == "transfer") %>%
-  mutate(SAI_transf = paste(SAI, transfer, sep = "_")) %>%
-  ggplot(aes(x = SAI, y = mean_grade_anomaly, 
-             fill = university, shape = as.factor(transfer))) + 
-  geom_point(aes(size = n),
+  select(-X.1, -X, -se_grade_anomaly,-female) |>
+  pivot_wider(names_from = transfer,
+              values_from = c(mean_grade_anomaly, n)) %>%
+  mutate(diff_grade_anom = mean_grade_anomaly_1 - mean_grade_anomaly_0,
+         n_total = n_0 + n_1)
+  
+#__plot####  
+fig5 <-
+  ggplot(sai_by_transfer, aes(x = SAI, y = diff_grade_anom, 
+             fill = university)) + 
+  geom_point(aes(size = n_total),
              position = position_dodge(0.2), 
-             alpha = 0.8, color = "black") + 
+             alpha = 0.8, pch = 21) + 
   geom_hline(yintercept = 0) + 
-  #facet_wrap(~crs_topic) +
-  ylim(-1.5,0)+ #excludes an outlier from Purdue at -2
-  facet_grid(rows = vars(crs_topic), cols = vars(transfer)) +
+  facet_wrap(~crs_topic) +
+  ylim(-0.6,0.3)+ #excludes an outlier from Purdue at -2
   theme_bw(base_size = 14) + 
-  scale_shape_manual(values = c(21,22)) + 
   scale_size_continuous(trans = "log10", breaks = c(10,100,1000))+ #point size for readability
   scale_fill_manual(values = deid_colors, labels = deid_labels) + 
-  #scale_x_discrete(labels = c("0","0","1","1","2","2","3","3","4","4")) + 
-  labs(y = "Mean Grade Anomaly", color = "Institution") 
+  labs(y = "Difference in Mean Grade Anomaly \n(Transfer- non-Transfer)", 
+       fill = "Institution",
+       size  = "N") +
+  theme_minimal(base_size = 14) + 
+  theme(axis.text = element_text(color = "black"), 
+        strip.text = element_text(color = "black"), 
+        panel.border = element_rect(color = "black", fill = NA, size = 1), 
+        strip.background = element_rect(color = "black", size = 1), 
+        panel.grid.major.x = element_blank(),  #mask horizontal gridlines
+        panel.grid.minor.x = element_blank())
 
 ##split facet ####
 #issue: splitFacet does not work for facet_grid objects
 
-f5 <- splitFacet(sai_by_transfer) 
+f5 <- splitFacet(fig5) 
 
 #cowplot for m.s. ####
 fig5panels <- cowplot::plot_grid(f5[[1]] + labs(subtitle = "CellBio"),
