@@ -45,8 +45,8 @@ dem_percent %>%
 f1 <- splitFacet(dem_bars)
 
 #cowplot for m.s. ####
-fig1 <- cowplot::plot_grid(f1[[1]] + labs(subtitle = "CellBio"),
-                           f1[[2]] + labs(subtitle = "Genetics"),
+fig1 <- cowplot::plot_grid(f1[[2]] + labs(subtitle = "Genetics"),
+                           f1[[1]] + labs(subtitle = "CellBio"),
                            cowplot::get_legend(f1[[1]]+ theme(legend.position = "right")), 
                            labels = c("A","B",""), nrow = 1, align = "v", axis = "b", 
                            rel_widths = c(1,1,0.5))
