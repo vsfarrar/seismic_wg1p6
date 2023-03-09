@@ -11,11 +11,26 @@ purdem <-read.csv("Purdue_demographic_gaps_by_offering_2022-09-26.csv")
 umdem <- read.csv("UMich_demographic_gaps_by_offering_2022-09-19.csv")
 ucddem<- read.csv("UCD_demographic_gaps_by_offering_2022-09-27.csv")
 
+#demographics excluding international students
+asudem_noint <- read.csv("International students excluded/ASU_demographic_gaps_by_offering_2022-09-27_no-international.csv")
+iudem_noint <- read.csv("International students excluded/IUB_demographic_gaps_by_offering_2022-09-08_no-international.csv")
+purdem_noint <-read.csv("International students excluded/Purdue_demographic_gaps_by_offering_2022-09-26_no-international.csv")
+umdem_noint <- read.csv("International students excluded/UMich_demographic_gaps_by_offering_2022-09-19_no-international.csv")
+ucddem_noint <- read.csv("International students excluded/UCD_demographic_gaps_by_offering_2022-09-27_no-international.csv")
+
 #fix class mismatches
 umdem$crs_term <- as.integer(umdem$crs_term)
+umdem_noint$crs_term <-as.integer(umdem_noint$crs_term)
 
 #bind rows
-all_dem <- dplyr::bind_rows(asudem, iudem, purdem, umdem, ucddem)
+all_dem_int <- dplyr::bind_rows(asudem, iudem, purdem, umdem, ucddem)
+all_dem_int$international_included <- 1 #code international included
+
+all_dem_noint <- dplyr::bind_rows(asudem_noint, iudem_noint, purdem_noint, umdem_noint, ucddem_noint)
+all_dem_noint$international_included <- 0 #code international included
+
+#bind two dataframes
+all_dem <- dplyr::bind_rows(all_dem_int, all_dem_noint)
 
 #data cleanup
 
