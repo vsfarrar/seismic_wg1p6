@@ -4,13 +4,15 @@
 #load data
 #currently: international included, coded conservatively
 
-all_dem <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_demographic_gaps2022-10-13.csv")
+all_dem <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_demographic_gaps2023-03-08.csv")
 
 #source functions
 source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
 
 #summarise data in one table ####
-dem_percent <- all_dem %>% group_by(crs_topic,university,demographic_var, value) %>% 
+dem_percent <- all_dem %>% 
+  filter(international_included == 1) %>%
+  group_by(crs_topic,university,demographic_var, value) %>% 
   summarise(n_total = sum(n_group),
             n_course = mean(n_course)) %>% 
   mutate(perc = n_total/n_course *100) #percent for each level
