@@ -2,11 +2,11 @@
 
 #Packages ####
 library(tidyverse)
-library(sjPlot) #tables to word
 library(naniar) #replace_with_na function
 library(plotrix)#std.error
 library(grid) #textGrobs
 library(gridExtra)
+#library(sjPlot) #tables to word. #issue loading sjPlot currently 
 
 #Working Directory ####
 
