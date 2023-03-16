@@ -2,8 +2,9 @@
 
 #Packages ####
 library(tidyverse)
-library(naniar) #replace_with_na function
-library(plotrix)#std.error
+library(scales) #for `percent` function
+library(naniar) #`replace_with_na` function
+library(plotrix)#`std.error`
 library(grid) #textGrobs
 library(gridExtra)
 #library(sjPlot) #tables to word. #issue loading sjPlot currently 
