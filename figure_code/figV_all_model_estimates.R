@@ -16,11 +16,15 @@ all_models_plot <-
   betas %>% 
   filter(international_included == 1) %>%
   mutate(significant = ifelse(is.na(s.sig), 0,1)) %>%
+  mutate(crs_topic = factor(crs_topic, levels = c("Genetics", "CellBio"))) %>%
   filter(!(variable %in% c("GPAO","EthnicityAsianAsianAmerican", "EthnicityOther"))) %>% 
   mutate(uni_topic = paste(crs_topic, university, sep = "_"), #crs_topic 1st allows  x axis to be split by course
          sig_topic = paste(crs_topic, significant, sep = "_")) %>%
-  mutate(num_uni_topic = as.integer(as.factor(uni_topic))) %>% #convert to numeric for x breks
-  ggplot(aes(x = num_uni_topic, y = estimate, 
+  #create an x-axis placeholder 1-10 , by course within each variable and model
+  group_by(variable, GPAO_included) %>%
+  arrange(crs_topic) %>%
+  mutate(x_placeholder = row_number()) %>%
+  ggplot(aes(x = x_placeholder, y = estimate, 
              color = as.factor(GPAO_included), shape = sig_topic)) + 
   geom_point(size = 3) + 
   geom_errorbar(aes(ymin = estimate - std.error, 
@@ -28,9 +32,12 @@ all_models_plot <-
                 width = 0.1) + 
   geom_hline(yintercept = 0) +
   geom_vline(xintercept = 5.5, color = "black", alpha = 0.9) + 
-  scale_shape_manual(values = c(1,16,2,17),
-                     labels = c("CellBio: n.s.", "CellBio: p < 0.05",
-                                "Genetics: n.s.", "Genetics: p < 0.05")) + 
+  scale_shape_manual(values = c("CellBio_0" = 1,"CellBio_1" = 16,
+                                "Genetics_0" = 2,"Genetics_1" = 17),
+                     #proper order in legend
+                     limits = c("Genetics_0", "Genetics_1", "CellBio_0", "CellBio_1"),
+                     labels = c("CellBio_0" = "CellBio: n.s.","CellBio_1" = "CellBio: p<0.05",
+                                "Genetics_0" = "Genetics: n.s.","Genetics_1" = "Genetics: p<0.05")) + 
   scale_color_discrete(labels = c("no", "yes")) + 
   scale_x_continuous(minor_breaks = seq(1,10,by =1),
                      breaks = seq(1,10, by = 1),
@@ -84,27 +91,27 @@ better_legend <-
                      nrow = 3, align = "h", rel_heights = c(0.5,0.5,0.5))
 
 #split facets ####
-f4 <- splitFacet(all_models_plot)
+fv <- splitFacet(all_models_plot)
 
 #cowplot for m.s. ####
-fig4 <- cowplot::plot_grid(f4[[2]] + ylim(-0.7,0.4) + annotate(geom = "text", x = 3, y = -0.7, label = "CellBio") + 
-                     annotate(geom = "text", x = 8, y = -0.7, label = "Genetics") +
+figV <- cowplot::plot_grid(fv[[2]] + ylim(-0.7,0.4) + annotate(geom = "text", x = 3, y = -0.7, label = "Genetics") + 
+                     annotate(geom = "text", x = 8, y = -0.7, label = "CellBio") +
                      labs(subtitle = "Women"),
-                   f4[[1]] + labs(subtitle = "PEER") + ylim(-0.7,0.4), 
-                   f4[[3]] + labs(subtitle = "FirstGen") + ylim(-0.7,0.4),
-                   f4[[4]] + labs(subtitle = "LowSES") + ylim(-0.7,0.4),
-                   cowplot::get_legend(f4[[4]]+ theme(legend.position = "right")), 
+                   fv[[1]] + labs(subtitle = "PEER") + ylim(-0.7,0.4), 
+                   fv[[3]] + labs(subtitle = "FirstGen") + ylim(-0.7,0.4),
+                   fv[[4]] + labs(subtitle = "LowSES") + ylim(-0.7,0.4),
+                   cowplot::get_legend(fv[[4]]+ theme(legend.position = "right")), 
                    labels = c("A","B","C","D",""), nrow = 1, align = "v", axis = "b", 
                    rel_widths = c(1,1,1,1,0.7))
 
 #shared x and y axis labels
-x.grob <- textGrob("Institution", gp=gpar(fontsize=14))
-y.grob <- textGrob("Estimate ± SE ", gp=gpar(fontsize=14), rot = 90)
+x.grobv <- textGrob("Institution", gp=gpar(fontsize=14))
+y.grobv <- textGrob("Estimate ± SE ", gp=gpar(fontsize=14), rot = 90)
 
 #add labels to plot
-fig4_final <- gridExtra::grid.arrange(arrangeGrob(fig4, bottom = x.grob, left = y.grob))
+figV_final <- gridExtra::grid.arrange(arrangeGrob(figV, bottom = x.grobv, left = y.grobv))
 
 #export plot ####
 
-ggsave(filename = paste0("fig4_all_model_estimates_", current_date, ".png"), path = "figures/",
-       fig4_final, height = 410/96, width = 1060/96, units = "in", dpi = 300)
+ggsave(filename = paste0("figV_all_model_estimates_", current_date, ".png"), path = "figures/",
+       figV_final, height = 410/96, width = 1060/96, units = "in", dpi = 300)
