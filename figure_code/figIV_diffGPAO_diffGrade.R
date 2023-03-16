@@ -1,4 +1,4 @@
-#MS Figure 3. diffGPAO vs diffGrade Plots #
+#MS Figure #. diffGPAO vs diffGrade Plots #
 
 #setup ####
 #load data ####
@@ -70,8 +70,8 @@ diff_tab <-
   #1 = PEER, 2 = female, 3 = FG, 4 = LowSES
   #1-4 = CellBio, 5-8 = Genetics
 
-penaltyperc <- percent(round(diff_tab$perc_penalty_mismatch/100, digits = 3))
-bonusperc <- percent(round(diff_tab$perc_bonus_mismatch/100, digits = 3))
+penaltyperc <- scales::percent(round(diff_tab$perc_penalty_mismatch/100, digits = 3))
+bonusperc <- scales::percent(round(diff_tab$perc_bonus_mismatch/100, digits = 3))
 
 #split facets ####
 cb <- splitFacet(diff_cellbio)
@@ -80,51 +80,52 @@ g <- splitFacet(diff_genetics)
 
 #cowplot for MS ####
 #shared edits 
-sharedx <- xlim(-1,2)
+sharedx <- xlim(-1,1) 
+  #note: balanced x axis following Nick's suggestion. Excludes 5 points from plots though. 
 sharedy <- ylim(-2,2)
 
-fig3main <- cowplot::plot_grid(cb[[2]] + labs(subtitle = "CellBio", y = "Women") + sharedx + sharedy + 
-                                 annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[2],
+figIVmain <- cowplot::plot_grid(g[[2]] + labs(subtitle = "Genetics", y = "Women") + sharedx + sharedy + 
+                                 annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[6],
                                           vjust = -2, hjust = 1.5), 
-                           g[[2]] + labs(subtitle = "Genetics")+ sharedx + sharedy +
-                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[6],
+                           cb[[2]] + labs(subtitle = "CellBio")+ sharedx + sharedy +
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[2],
                                       vjust = -2, hjust = 1.5),
-                           cb[[1]] + labs(y = "PEER")+ sharedx + sharedy +
-                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[1],
-                                      vjust = -2, hjust = 1.5), 
-                           g[[1]]+ sharedx + sharedy + 
+                           g[[1]] + labs(y = "PEER")+ sharedx + sharedy +
                              annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[5],
                                       vjust = -2, hjust = 1.5), 
-                           cb[[3]] + labs(y = "FirstGen")+ sharedx + sharedy + 
-                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[3],
+                           cb[[1]]+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[1],
                                       vjust = -2, hjust = 1.5), 
-                           g[[3]]+ sharedx + sharedy + 
+                           g[[3]] + labs(y = "FirstGen")+ sharedx + sharedy + 
                              annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[7],
-                                      vjust = -2, hjust = 1.5),
-                           cb[[4]] + labs(y = "LowSES")+ sharedx + sharedy + 
-                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[4],
                                       vjust = -2, hjust = 1.5), 
-                           g[[4]]+ sharedx + sharedy + 
+                           cb[[3]]+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[3],
+                                      vjust = -2, hjust = 1.5),
+                           g[[4]] + labs(y = "LowSES")+ sharedx + sharedy + 
                              annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[8],
+                                      vjust = -2, hjust = 1.5), 
+                           cb[[4]]+ sharedx + sharedy + 
+                             annotate(geom = "text", x=Inf, y = -Inf, label = penaltyperc[4],
                                       vjust = -2, hjust = 1.5),
                            labels = "AUTO", nrow = 4, ncol = 2, align = "v", axis = "b")
 
 #get legend for bottom 
-fig3legend <- cowplot::get_legend(g[[4]] + labs(fill = "Institution") + theme(legend.position = "bottom"))
+figIVlegend <- cowplot::get_legend(g[[4]] + labs(fill = "Institution") + theme(legend.position = "bottom"))
 
 #shared x and y axis labels
-x.grob3 <- textGrob("GPAO Difference (1-0)", gp=gpar(fontsize=14, fontface = "bold"))
-y.grob3 <- textGrob("Course Grade Difference (1-0)", gp=gpar(fontsize=14, fontface = "bold"), rot = 90)
+x.grobIV <- textGrob("GPAO Difference (1-0)", gp=gpar(fontsize=14, fontface = "bold"))
+y.grobIV <- textGrob("Course Grade Difference (1-0)", gp=gpar(fontsize=14, fontface = "bold"), rot = 90)
 
 #add labels to plot
-fig3 <- gridExtra::grid.arrange(arrangeGrob(fig3main, bottom = x.grob3, left = y.grob3))
+figIV <- gridExtra::grid.arrange(arrangeGrob(figIVmain, bottom = x.grobIV, left = y.grobIV))
 
 #cowplot the grob and the legend together
-fig3_final <- cowplot::plot_grid(fig3, 
-                           fig3legend, 
+figIV_final <- cowplot::plot_grid(figIV, 
+                           figIVlegend, 
                            nrow = 2, align = "h", axis = "l",
                            rel_heights = c(1,0.1))
 
 #export plot ####
-ggsave(filename = paste0("fig3_diffGPAO_diffGrade_", current_date, ".png"), path = "figures/",
-       fig3_final, height = 960/96, width = 735/96, units = "in", dpi = 300, bg= "white")
+ggsave(filename = paste0("figIV_diffGPAO_diffGrade_", current_date, ".png"), path = "figures/",
+       figIV_final, height = 960/96, width = 735/96, units = "in", dpi = 300, bg= "white")
