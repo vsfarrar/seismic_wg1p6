@@ -17,8 +17,11 @@ sai_grades <-
   group_by(university, crs_topic, SAI) %>%
   summarise(n = sum(n),
             avg_grade = mean(mean_grade),
-            se_grade = std.error(mean_grade))
-
+            se_grade = std.error(mean_grade)) %>%
+  #add confidence intervals
+  mutate(lowCI = avg_grade - se_grade*1.96,
+         hiCI = avg_grade + se_grade*1.96)
+  
 #__plot ####
 
 plot_sai_grades <-
