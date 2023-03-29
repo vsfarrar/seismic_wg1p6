@@ -85,3 +85,18 @@ grade_gpa_diff_ethniccode <-
 
 #export .csv
 write.csv(grade_gpa_diff_ethniccode, paste0(institution,"_mean_grade_gpa_diff_offering_ethniccode_",current_date,".csv"))
+
+# STUDENT CLASS STANDING: Descriptive Stats ####
+#calculate ns, average grades and gpao for class standing
+
+class_standing_stats <-
+  dat_new %>%
+  group_by(university, crs_name, crs_offering, class_standing) %>%
+  summarise(n = n(), 
+            mean_grade = mean(numgrade, na.rm = T),
+            mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
+            mean_gpao = mean(gpao, na.rm = T))
+
+#export .csv
+write.csv(class_standing_stats, paste0(institution,"_class_standing_stats_",current_date,".csv"))
+
