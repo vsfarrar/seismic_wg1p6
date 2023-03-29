@@ -25,8 +25,8 @@ current_date <- as.Date(Sys.Date(), format = "%m/%d/%Y")
 
 # make sure demographic variables are entered as character class
 dat <- dat %>% 
-  mutate(across(c(female, firstgen, ethniccode, ethniccode_cat, 
-                  urm, lowincomeflag, transfer, international), as.character))
+  mutate(across(c(female, firstgen, ethniccode_cat, 
+                  lowincomeflag, transfer, international), as.character))
 
 # RUN ALL SCRIPTS
 source("seismic_data_filtering.R") #filters data and produces two datasets, one with and one without international
