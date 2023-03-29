@@ -15,7 +15,7 @@ dat_new <-
 #add university to dataframe
   mutate(university = institution,
 #create an offering variable (concatenate term + section)
-         crs_offering = paste(crs_term, crs_section,sep = "_"),
+         crs_offering = paste(crs_year, crs_semq, crs_section, sep = "_"),
 #create a "PEER" variable (manually) (ethniccode_cat == 1)
          peer = ifelse(ethniccode_cat == 1, 1, 0))
 
