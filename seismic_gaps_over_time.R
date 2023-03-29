@@ -97,6 +97,26 @@ class_standing_stats <-
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T))
 
+# COURSE ORDER (for students that took both courses in dataset) ####
+#class standing gives us a sense of when students take each course
+#but students may take both courses when they are juniors, for example
+#if students in our data took both courses, look at when they took each. 
+
+course_order_summary <-
+dat_new %>%
+  #concatenate crs_year and crs_semq to do sequence / order analysis 
+  #(this format is the same as crs_term in UCD notation)
+  mutate(crs_term2 = paste0(crs_year, crs_semq)) %>%
+  select(st_id, crs_subject, crs_term2) %>% 
+  drop_na(crs_subject) %>%
+  pivot_wider(names_from = "crs_subject",
+              names_prefix = "term_",
+              values_from = "crs_term2") %>% 
+  count(!is.na(term_Genetics) & !is.na(term_CellBio), 
+        term_Genetics == term_CellBio,
+        term_Genetics < term_CellBio,
+        term_Genetics > term_CellBio) 
+
 #export .csv
-write.csv(class_standing_stats, paste0(institution,"_class_standing_stats_",current_date,".csv"))
+write.csv(course_order_summary, paste0(institution,"_course_order_summary_",current_date,".csv"))
 
