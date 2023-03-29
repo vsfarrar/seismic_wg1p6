@@ -95,6 +95,8 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * gpao
 * crs_name
 * crs_term
+* crs_year
+* crs_semq
 * crs_section
 * crs_retake
 * summer_crs
