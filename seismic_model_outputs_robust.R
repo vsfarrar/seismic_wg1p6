@@ -8,7 +8,7 @@
 main_fx_all_rob <-
   dat_new %>%
   group_by(crs_name) %>% nest() %>%
-  mutate(fit = map(data, ~rlmerRcpp(numgrade ~ gpao + female + peer + firstgen + transfer + lowincomeflag +
+  mutate(fit = map(data, ~rlmerRcpp(numgrade ~ gpao + female + peer + firstgen + transfer + lowincomeflag + international +
                                + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
   unnest(results) %>%
@@ -22,7 +22,7 @@ main_fx_all_rob <-
 main_fx_no_gpao_rob <-
   dat_new %>%
   group_by(university, crs_name) %>% nest() %>%
-  mutate(fit = map(data, ~rlmerRcpp(numgrade ~ female + peer + firstgen + transfer + lowincomeflag +
+  mutate(fit = map(data, ~rlmerRcpp(numgrade ~ female + peer + firstgen + transfer + lowincomeflag + international +
                                 + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
   unnest(results) %>%
