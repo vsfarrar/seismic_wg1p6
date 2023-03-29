@@ -8,7 +8,7 @@ dat_new %>%
   group_by(crs_name) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
   group_by(crs_name,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
   group_by(crs_name, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
-  pivot_longer(cols = c(female,ethniccode_cat,firstgen, lowincomeflag, transfer),
+  pivot_longer(cols = c(female,peer,firstgen, lowincomeflag, transfer),
                names_to = "demographic_var",
                values_to = "value") %>%
   group_by(university, crs_name, crs_term, crs_offering, demographic_var, value) %>%
@@ -32,7 +32,7 @@ write.csv(demog_gaps_offering, paste0(institution, "_demographic_gaps_by_offerin
 
 grade_gpa_diff <-
 dat_new %>%
-  pivot_longer(cols = c(female,firstgen, lowincomeflag, transfer),
+  pivot_longer(cols = c(female, peer, firstgen, lowincomeflag, transfer),
                names_to = "demographic_var",
                values_to = "value") %>%
   group_by(university, crs_name, crs_term, crs_offering, demographic_var, value) %>%
