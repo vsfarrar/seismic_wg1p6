@@ -94,6 +94,7 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * cum_prior_gpa
 * gpao
 * crs_name
+* crs_subject
 * crs_term
 * crs_year
 * crs_semq
