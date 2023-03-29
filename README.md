@@ -86,7 +86,6 @@ Please refer to the DataDescription and Project meeting notes above for details 
 * st_id
 * female
 * ethniccode_cat
-* urm 
 * firstgen
 * international
 * transfer
