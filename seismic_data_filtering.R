@@ -15,7 +15,9 @@ dat_new <-
 #add university to dataframe
   mutate(university = institution,
 #create an offering variable (concatenate term + section)
-         crs_offering = paste(crs_term, crs_section,sep = "_"))
+         crs_offering = paste(crs_term, crs_section,sep = "_"),
+#create a "PEER" variable (manually) (ethniccode_cat == 1)
+         peer = ifelse(ethniccode_cat == 1, 1, 0))
 
 #Create a summary report of students that were filtered out ####
 
@@ -65,16 +67,16 @@ write.csv(missing_demog, paste0(institution,"_n_missing_demographics_",current_d
 dat_new <-
   dat_new %>%
   tidyr::replace_na(list(ethniccode_cat = "0", firstgen = "0", international = "0",
-                         transfer = "0", lowincomeflag = "0", urm = "0"))
+                         transfer = "0", lowincomeflag = "0", peer = "0"))
 
 #International Student Processing ####
 
 #1)International students coded conservatively 
-#for all other demographic variables of interest EXCEPT gender
+#for all other demographic variables of interest EXCEPT gender and transfer
 #e.g. ethniccode_cat becomes 0 (white) for all international students
 dat_int <- 
   dat_new %>%
-  mutate(across(c(ethniccode_cat, firstgen,transfer, lowincomeflag, urm), 
+  mutate(across(c(ethniccode_cat, firstgen, lowincomeflag, peer), 
             ~ifelse(international == 1, 0, .)))
 
 #2)International students excluded completely from analysis 
