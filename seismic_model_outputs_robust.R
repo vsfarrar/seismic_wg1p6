@@ -7,7 +7,7 @@
 
 main_fx_all_rob <-
   dat_new %>%
-  group_by(crs_name) %>% nest() %>%
+  group_by(crs_subject) %>% nest() %>%
   mutate(fit = map(data, ~rlmerRcpp(numgrade ~ gpao + female + peer + firstgen + transfer + lowincomeflag + international +
                                + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
@@ -21,7 +21,7 @@ main_fx_all_rob <-
 
 main_fx_no_gpao_rob <-
   dat_new %>%
-  group_by(university, crs_name) %>% nest() %>%
+  group_by(university, crs_subject) %>% nest() %>%
   mutate(fit = map(data, ~rlmerRcpp(numgrade ~ female + peer + firstgen + transfer + lowincomeflag + international +
                                 + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
@@ -36,7 +36,7 @@ main_fx_no_gpao_rob <-
 grade_anom_main_fx <-
   dat_new %>%
   mutate(grade_anomaly = numgrade -gpao) %>%
-  group_by(university, crs_name) %>% nest() %>%
+  group_by(university, crs_subject) %>% nest() %>%
   mutate(fit = map(data, ~rlmerRcpp(grade_anomaly ~ female + peer + firstgen + transfer + lowincomeflag + international +
                                       + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
@@ -51,7 +51,7 @@ grade_anom_main_fx <-
 
 interactions_gpao_rob <-
   dat_new %>%
-  group_by(university, crs_name) %>% nest() %>%
+  group_by(university, crs_subject) %>% nest() %>%
   mutate(fit = map(data, ~rlmerRcpp(numgrade ~ female*gpao + peer*gpao + firstgen*gpao + transfer*gpao + lowincomeflag*gpao + international*gpao +
                                       + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
@@ -66,7 +66,7 @@ interactions_gpao_rob <-
 
 interactions_gpao_gender <-
   dat_new %>%
-  group_by(university, crs_name) %>% nest() %>%
+  group_by(university, crs_subject) %>% nest() %>%
   mutate(fit = map(data, ~rlmerRcpp(numgrade ~ female*gpao + peer + firstgen + transfer + lowincomeflag + international +
                                       + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
@@ -81,7 +81,7 @@ interactions_gpao_gender <-
 
 main_fx_prior_gpa_rob<-
   dat_new %>%
-  group_by(university, crs_name) %>% nest() %>%
+  group_by(university, crs_subject) %>% nest() %>%
   mutate(fit = map(data, ~rlmerRcpp(numgrade ~ cum_prior_gpa + female + peer + firstgen + transfer + lowincomeflag + international +
                                       + (1|crs_offering), data = ., method = "DASvar")), 
          results = map(fit, tidy)) %>%
