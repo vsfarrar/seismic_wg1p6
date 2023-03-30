@@ -30,10 +30,25 @@ main_fx_no_gpao_rob <-
   mutate(s.sig = case_when(statistic > 1.96 | statistic < -1.96 ~ "***",
                            statistic <= 1.96 & statistic >= -1.96 ~ "",)) 
 
+#rlmer(no GPAO)####
+#robust mixed model with all main effects WITHOUT GPAO CONTROL
+
+grade_anom_main_fx <-
+  dat_new %>%
+  mutate(grade_anomaly = numgrade -gpao) %>%
+  group_by(university, crs_name) %>% nest() %>%
+  mutate(fit = map(data, ~rlmerRcpp(grade_anomaly ~ female + peer + firstgen + transfer + lowincomeflag + international +
+                                      + (1|crs_offering), data = ., method = "DASvar")), 
+         results = map(fit, tidy)) %>%
+  unnest(results) %>%
+  select(-data, -fit, - group) %>%
+  mutate(s.sig = case_when(statistic > 1.96 | statistic < -1.96 ~ "***",
+                           statistic <= 1.96 & statistic >= -1.96 ~ "",)) 
 
 
 #export models ####
 #export model outputs from each course
 write.csv(main_fx_all_rob, paste0(institution, "_mixed_model_outputs_main_effects_robust_",current_date,".csv"))
 write.csv(main_fx_no_gpao_rob, paste0(institution, "_mixed_model_outputs_noGPAO_robust_",current_date,".csv"))
+write.csv(grade_anom_main_fx, paste0(institution, "_mixed_model_grade_anomaly_main_fx_robust_",current_date,".csv"))
 
