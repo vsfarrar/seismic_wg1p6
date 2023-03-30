@@ -17,7 +17,7 @@ dat_new <-
 #create an offering variable (concatenate term + section)
          crs_offering = paste(crs_year, crs_semq, crs_section, sep = "_"),
 #create a "PEER" variable (manually) (ethniccode_cat == 1)
-         peer = ifelse(ethniccode_cat == 1, 1, 0))
+         peer = ifelse(ethniccode_cat == "1", "1", "0"))
 
 #Create a summary report of students that were filtered out ####
 

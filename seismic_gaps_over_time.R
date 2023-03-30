@@ -120,3 +120,44 @@ dat_new %>%
 #export .csv
 write.csv(course_order_summary, paste0(institution,"_course_order_summary_",current_date,".csv"))
 
+# OVERALL DEMOGRAPHICS BY GENDER ####
+# For Supplemental of the MS
+
+ns_by_gender <-
+dat_new %>%
+  group_by(crs_name) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
+  group_by(crs_name,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
+  group_by(crs_name, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
+  pivot_longer(cols = c(peer,firstgen, lowincomeflag, transfer, international, class_standing),
+               names_to = "demographic_var",
+               values_to = "value") %>%
+  group_by(university, crs_name, crs_term, crs_offering, female, demographic_var, value) %>%
+  summarise(n_group = n(), #total for that demographic group, by offering.
+            n_offering = mean(n_offering),
+            n_course = mean(n_course))
+
+#export.csv
+write.csv(ns_by_gender, paste0(institution,"_Ns_by_gender_",current_date,".csv"))
+
+# GAPS OVER YEARS ####
+#this technically can be done using the demog_gaps_offering 
+
+gaps_over_years <-
+dat_new %>%
+  group_by(crs_name) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
+  group_by(crs_name,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
+  group_by(crs_name, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
+  pivot_longer(cols = c(female,peer,firstgen, lowincomeflag, transfer, international),
+               names_to = "demographic_var",
+               values_to = "value") %>%
+  group_by(university, crs_name, crs_year, demographic_var, value) %>%
+  summarise(mean_grade = mean(numgrade, na.rm = T),
+            mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
+            mean_gpao = mean(gpao, na.rm = T)) %>%
+  pivot_wider(names_from = value, values_from = c(mean_grade,mean_prior_gpa, mean_gpao))  %>%
+  mutate(grade_diff_01 = mean_grade_0 - mean_grade_1, 
+         gpa_diff_01 = mean_prior_gpa_0 - mean_prior_gpa_1,
+         gpao_diff_01 = mean_gpao_0 - mean_gpao_1)
+
+#export.csv
+write.csv(gaps_over_years, paste0(institution,"_gaps_over_years_",current_date,".csv"))
