@@ -60,7 +60,7 @@ For this project, we are currently using the following inclusion criteria:
 
 ## Dataset Format and Variables 
 
-Before running the code, ensure your data is formatted in the described SEISMIC format. Please reference this data dictionary for the correct variable names and minimum variables required: 
+Before running the code, ensure your data is formatted in the described SEISMIC format. Please reference the Bare-Minimum required variables list below and the Data Dictionary below  for the correct variable names and minimum variables required: 
  
 [DataDescription_ SEISMIC_ WG1P6.xlsx](https://docs.google.com/spreadsheets/d/1SJKqRIwwFkYRMk1GrEuAUOixMuZkXgmE/edit?usp=sharing&ouid=101003818724972958035&rtpof=true&sd=true) (Google Drive link; open access) 
  
@@ -69,40 +69,45 @@ Course-level variables and student-level variables should be included in the sam
 See the below example: 
 
 <!-- example-table-LIST:START -->
-| crs_name| crs_term | st_id | female| firstgen | numgrade | gpao | 
+| crs_name| crs_term | crs_year | crs_semq| crs_section |st_id | female| firstgen | numgrade | gpao | 
 | :----| :---- | :---- | :---- | :---- | :---- |:---- |
-| PHYS101 | 202101|123| 0 | 1 | 2.0| 2.74 |
-| BIO101 | 202103|123| 0 | 1 | 3.3|3.38 |
-| CHEM001 | 202010|123| 0 | 1 | 4.0|3.89 |
-| CHEM001 | 202101|456| 1 | 0| 3.7|3.45 |
+| BIO101 | 202101|2021 | 01| 01 |123| 0 | 1 | 2.0| 2.74 |
+| GEN102 | 202103|2021 | 03| 01 |123| 0 | 1 | 3.3|3.38 |
+| CHEM103 | 202010|2020 | 10| 01 |123| 0 | 1 | 4.0|3.89 |
+| GEN102 | 202101|2021 | 01| 02 |456| 1 | 0| 3.7|3.45 |
 
 For an example that includes all the "Bare Minimum" variables, see here: [Example dataset](https://docs.google.com/spreadsheets/d/14yD7tf09ZbpKUBF2KIkqPzPLpyKW9BeQyEd5zlR7EUM/edit?usp=sharing) (Google Doc; *open access*) 
 
 ### Bare-minimum required variables for running code:
 
 Of the below required variables, this lists the *bare minimum* to run the code as it stands in this repository. Without these variables, the code will not run. 
-Please refer to the DataDescription and Project meeting notes above for details of how these variables are defined. 
 
-* st_id
-* female
-* ethniccode_cat
-* firstgen
-* international
-* transfer
-* lowincomeflag
-* numgrade
-* cum_prior_gpa
-* gpao
-* crs_name
-* crs_subject
-* crs_term
-* crs_year
-* crs_semq
-* crs_section
-* crs_retake
-* summer_crs
-* class_standing
+**Data Dictionary for Bare-Minimum Require Variables**
 
+| **Variable**   | **Level**  | **Description**                                              | **Accepted Values** <br />*(if defined)*                                                                                                                                                                                                                                                                                             | **Other notes**                                                                                                                                                                     |
+|----------------|------------|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| st_id          | student    | Unique student identifier                                    |                                                                                                                                                                                                                                                                                                                                      |                                                                                                                                                                                     |
+| female         | student    | Gender                                                       | 0: Student self-reports gender as man <br /> 1: Student self-reports gender as woman<br /> 2: other or third-category<br /> If unknown, set to NA                                                                                                                                                                                    |                                                                                                                                                                                     |
+| ethniccode_cat | student    | Race/Ethnicity Category                                      | 0 = Student only self-identifies as White. <br /> 1 = Student's self-identity includes Latino or Hispanic, <br /> Black or African American, American Indian, Alaska Native, or Pacific Islander, <br /> 2 = Asian/Asian American only or Asian/Asian American and White only <br /> 3 = Two or more unresolvable/catch-all unknown. | If mixed race/ethnicities, note that the definition <br />for 1 is "includes" any of those categories.                                                                              |
+| firstgen       | student    | First-Generation College Student <br /> (Parental Education) | 0: At least one parent/guardian holds a Bachelor's degree <br /> 1: Neither parent/guardian holds a Bachelor’s degree or higher <br />                                                                                                                                                                                               |                                                                                                                                                                                     |
+| international  | student    | International Status                                         | 0: U.S. Citizen or Permanent Resident 1: Non-Resident Alien                                                                                                                                                                                                                                                                          |                                                                                                                                                                                     |
+| transfer       | student    | Transfer Status from another institution                     | 0: Non-transfer; first-year or freshman start, previous institution was high school <br /> 1: Transfer student from another two-year or four-year institution <br />                                                                                                                                                                 | Many institutions have a "transfer flag" with admissions/applications. <br /> If no transfer flag, base upon number of prior college units.                                         |
+| lowincomeflag  | student    | Low Socioeconomic Status                                     | 0: Student does not come from a low-income family/area <br /> 1: Student flagged as low-income based on family household income.<br /> Use Pell grant eligibility, if unavailable,use <br /> $25,100*1.85 = $46,435 (185% of U.S. poverty line for household size of 4; $25,100)                                                     |                                                                                                                                                                                     |
+| numgrade       | course     | Course Final Grade                                           | Numeric, converted from letter grades <br /> (use your institition's conversion scale)                                                                                                                                                                                                                                               | should be first time course taken                                                                                                                                                   |
+| cum_prior_gpa  | course     | Student Cumulative Prior GPA                                 | Numeric. <br /> Prior, cumulative GPA of the student <br />  at the beginning of the term listed in crs_term. <br /> (should differ with each term)                                                                                                                                                                                  | values should have same range as `numgrade`                                                                                                                                         |
+| gpao           | course     | Grade Point Average Omitting the Course of Interest          | Numeric. <br/> GPA in all courses throught this term, excluding this class. <br /> Use the cumulative GPAO over all terms at the institution <br /> (i.e., don’t include community college credits/grades)                                                                                                                           |                                                                                                                                                                                     |
+| crs_name       | course     | Course Name                                                  | Catalog code for course of interest. e.g. "BIOL101"                                                                                                                                                                                                                                                                                  |                                                                                                                                                                                     |
+| crs_subject    | course     | Course Subject                                               | **Project-specific subject codes.** <br /> Allowed values: <br /> - Genetics <br /> - CellBio  <br /> (case-sensitive)                                                                                                                                                                                                               |                                                                                                                                                                                     |
+| crs_term       | course     | Course Term                                                  | Categorical, year/term in which academic year the course took place;  <br />                                                                                                                                                                                                                                                         | Note: Can use whatever notation your institution uses, including unique identifiers. <br /> `crs_year`  and  `crs_semq`  have specific format requirements.                         |
+| crs_year       | course     | Year of Course Term                                          | Numeric, YYYY format. (e.g. 2021). Year that the course term was offered.                                                                                                                                                                                                                                                            |                                                                                                                                                                                     |
+| crs_semq       | course     | Semester or Quarter of Course Term                           | Numeric, ## format that denotes semester or quarter offered. <br /> Allowed values: <br /> 01: Winter quarter or Spring / Winter semester 03: Spring quarter 10: Fall quarter or Fall semester                                                                                                                                       |                                                                                                                                                                                     |
+| crs_section    | course     | Course Section                                               | If more than one section offered per term, the section number. <br /> E.g. 001, 002, etc. <br /> If only one section offered per term, default to 1. <br />                                                                                                                                                                          |                                                                                                                                                                                     |
+| crs_retake     | course     | Course Retaken                                               | 0: not a retake (first time taken) <br /> 1: retake (time retaken does not matter)                                                                                                                                                                                                                                                   | Note: given the inclusion criteria,  <br /> it is possible to only have crs_retaken == 0 in full dataset.  <br /> If missing, can create dummy variable of crs_retaken == 0. <br /> |
+| summer_crs     | course     | Summer Course Offering?                                      | 0: offered during academic year (fall,winter,spring) <br /> 1: offered during summer <br />                                                                                                                                                                                                                                          | Note: given the inclusion criteria, <br /> it is possible to only have summer_crs == 0 in full dataset. <br /> If missing, can create dummy variable of summer_crs == 0.  <br />    |
+| class_standing | course     | Student Class Standing                                       | Student class standing at term course was taken (`crs_term`) <br /> Allowed values: <br /> (case-sensitive,use all caps) <br /> FR:Freshman <br /> SO:Sophomore <br /> JR:Junior<br /> SR:Senior<br /> Please use your institution's unit cutoffs for these definitions.                                                             |                                                                                                                                                                                     |
+
+
+You can refer to the DataDescription and Project meeting notes above for more details of how these variables are defined. 
 
 ## Running Code
 
