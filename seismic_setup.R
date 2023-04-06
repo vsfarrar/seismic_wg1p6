@@ -36,7 +36,7 @@ dat_new <- dat_int
 source("seismic_gaps_over_time.R") 
 source("seismic_advantages_groups.R")
 #source("seismic_model_outputs.R") #currently turned off, robust rlmer models run instead. 
-source("seismic_model_outputs_robust.R") #note: may take >30 min for large datasets. 
+source("seismic_model_outputs_robust_new.R") #note: may take >30 min for large datasets. 
 
 #2.Run all scripts again excluding international students completely
 dat_new <- dat_noInt
