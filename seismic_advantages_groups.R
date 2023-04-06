@@ -38,8 +38,38 @@ advantages_by_offering <-
             se_grade = std.error(numgrade, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T),
             se_gpao = std.error(gpao, na.rm = T),
-            mean_diff_grade_gpao = mean(grade_gpao_diff, na.rm = T), 
-            se_diff_grade_gpao = std.error(grade_gpao_diff, na.rm = T)) %>%
+            mean_grade_anomaly = mean(grade_gpao_diff, na.rm = T), 
+            se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T)) %>%
+  mutate(group_label = recode(advantage,
+                              "0" ="non-URM,non-LI,non-FG man",
+                              "1A" = "+W",
+                              "3D" = "+URM+FG+LI",
+                              "4" = "+URM+FG+LI+W",
+                              "1B" = "+URM",
+                              "2C" ="+URM+W",
+                              "1D" ="+FG",
+                              "2E" = "+FG+W",
+                              "1C" = "+LI",
+                              "2F" = "+LI+W",
+                              "2A"="+URM+FG",
+                              "3B"="+URM+FG+W",
+                              "2B"="+URM+LI",
+                              "3C"= "+URM+LI+W",
+                              "2D" = "+FG+LI",
+                              "3A" = "+FG+LI+W"))
+
+#advantages broken down by transfer
+#Advantage Groups across all offerings ####
+advantages_by_offering_by_transfer <- 
+  dat_new %>%
+  group_by(university, crs_name, crs_offering, advantage, transfer) %>%
+  summarise(n = n(), 
+            mean_grade = mean(numgrade, na.rm = T), 
+            se_grade = std.error(numgrade, na.rm = T),
+            mean_gpao = mean(gpao, na.rm = T),
+            se_gpao = std.error(gpao, na.rm = T),
+            mean_grade_anomaly = mean(grade_gpao_diff, na.rm = T), 
+            se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T)) %>%
   mutate(group_label = recode(advantage,
                               "0" ="non-URM,non-LI,non-FG man",
                               "1A" = "+W",
@@ -66,14 +96,18 @@ sai_by_offering <- dat_new %>%
             se_grade = std.error(numgrade, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T),
             se_gpao = std.error(gpao, na.rm = T),
-            mean_diff_grade_gpao = mean(grade_gpao_diff, na.rm = T), 
-            se_diff_grade_gpao = std.error(grade_gpao_diff, na.rm = T))
+            mean_grade_anomaly = mean(grade_gpao_diff, na.rm = T), 
+            se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T))
 
 #SAI averages for plot ####
 sai_avg_plot <-
 dat_new %>%
   group_by(university, crs_name, SAI) %>%
   summarise(n = n(), 
+            mean_grade = mean(numgrade, na.rm = T),
+            se_grade = std.error(numgrade, na.rm = T),
+            mean_gpao = mean(gpao, na.rm = T),
+            se_grade = std.error(gpao, na.rm = T),
             mean_grade_anomaly = mean(grade_gpao_diff, na.rm = T), 
             se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T))
 
@@ -82,6 +116,10 @@ sai_avg_by_gender <-
   dat_new %>%
   group_by(university, crs_name, female, SAI) %>%
   summarise(n = n(), 
+            mean_grade = mean(numgrade, na.rm = T),
+            se_grade = std.error(numgrade, na.rm = T),
+            mean_gpao = mean(gpao, na.rm = T),
+            se_grade = std.error(gpao, na.rm = T),
             mean_grade_anomaly = mean(grade_gpao_diff, na.rm = T), 
             se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T))
 
@@ -90,11 +128,16 @@ sai_avg_by_transfer <-
   dat_new %>%
   group_by(university, crs_name, transfer, SAI) %>%
   summarise(n = n(), 
+            mean_grade = mean(numgrade, na.rm = T),
+            se_grade = std.error(numgrade, na.rm = T),
+            mean_gpao = mean(gpao, na.rm = T),
+            se_grade = std.error(gpao, na.rm = T),
             mean_grade_anomaly = mean(grade_gpao_diff, na.rm = T), 
-            se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T))
+            se_grade_anomaly = std.error(grade_gpao_diff, na.rm = T)) 
 
 #export data to csv
 write.csv(advantages_by_offering, paste0(institution,"_advantages_by_offering_",current_date, ".csv"))
+write.csv(advantages_by_offering_by_transfer, paste0(institution,"_advantages_by_offering_by_transfer_",current_date, ".csv"))
 write.csv(sai_by_offering, paste0(institution,"_sai_by_offering_",current_date, ".csv"))
 write.csv(sai_avg_plot, paste0(institution,"_sai_plot_",current_date, ".csv"))
 write.csv(sai_avg_by_gender, paste0(institution,"_sai_plot_by_gender_",current_date, ".csv"))
