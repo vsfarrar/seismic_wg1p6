@@ -38,7 +38,7 @@ ifelse(nrow(anti_join(dat,dat_new)) == sum(filtered_out$n),
        print("ISSUE: Some filtered cases are not accounted for."))
 
 #export the filtered out data report
-write.csv(filtered_out, paste0(institution,"_n_excluded_by_filters",current_date,".csv"))
+write.csv(filtered_out, paste0(institution,"_n_excluded_by_filters_",current_date,".csv"))
 
 #####################
 #Demographic Conversion ####
