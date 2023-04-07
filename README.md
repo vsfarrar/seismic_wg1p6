@@ -139,17 +139,22 @@ You can refer to the DataDescription and Project meeting notes above for more de
 
 # Results Returned
 
-22 .csv files should be returned by the script: 
-
-*  **\international-excluded**
-	* creates a folder with all of the above figure analyses, but with international students completely excluded from the analysis. The number of international students excluded can be found in the `n_missing_demographics` file. 
-	* should contain 10 .csv files with the suffix `_no-international`
+15 .csv files should be returned by the script: 
 
 * `advantages_by_offering`
-	* parses out demographic variables into a set of "advantages", ranging from 1 - 4 advantages, and gives summary statistics for each advantages group 
+	* parses out demographic variables into a set of "advantages", ranging from 1 - 4 advantages, and gives summary statistics for each advantages group (advantage groups differ from SAI as they delineate specific advantages held, rather than number) 
+
+* `advantages_by_offering_by_transfer`
+	* same as above, but also sorted by transfer status
+
+* `all_robust_model_outputs`
+	* returns model outputs (estimates, std.errors, statistics) for all robust models, including models with 1) all variables as main effects only, 2) main effects excluding GPAO, 3) grade anomaly as a dependent variable, 4) second-order interactions between all variables and GPAO, and 5) second-order interaction between GPAO and gender only. 
 	
 * `demographic_gaps_by_offering`
 	* for each demographic group (female, firstgen, ethnicode_cat, transfer, lowincomeflag, international) it returns the mean and sem grade for each group for each offering (term + section) of each course, as well as the number of students in that group. 
+
+* `gaps_over_years`
+	* aggregates gaps by demographic variable by calendar year, so overall trends can be seen over time without identifying individual offerings
 
 * `mean_gpa_grade_difference_by_offering` 
 	* returns the mean and SEM difference between 0 and 1 for demographic groups (gender,firstgen, transfer, lowincomeflag) in terms of prior gpa, GPAO and grade for each offering of each course. 
@@ -157,18 +162,14 @@ You can refer to the DataDescription and Project meeting notes above for more de
 * `mean_gpa_grade_diff_offering_ethniccode` 
 	* returns the mean and SEM difference between each level of ethnicity categories for each offering of each course. 
 
-* `mixed_model_outputs_main_effects_robust`
-	* for each course, returns the beta estimates and SEM for a main effects only multilevel model using robust linear mixed models (robustlmm package) 
-	* numgrade ~ GPAO + female + firstgen + ethnicode cat + transfer + lowincomeflag + (1|crs_offering) 
-	
-* `mixed_model_outputs_noGPAO_robust`
-	* calculates the main effects above using robust estimation but without controlling for GPAO 
-
 * `n_excluded_by_filters` 
 	* for each filtering criteria, gives the number of students that were excluded
 
 * `n_missing_demographics` 
 	* for each demographic group, lists how many students were missing information and were conservatively coded as 0. 
+
+* `Ns_by_gender`
+	* ns for each demographic variable, but disaggregated by gender 
 
 * `sai_by_offering`
 	* calculates Systemic Advantage Index (SAI; see Sarah Castle's work in WG1P1) and reports summary statistics for each group: n, mean + SEM course grades, GPAO, and grade anomaly for each offering of each course. 
@@ -184,8 +185,7 @@ You can refer to the DataDescription and Project meeting notes above for more de
 	
 
 # Workflow Diagram 
-![seismic-wg1p6_workflow_diagram_2022-08-29](https://user-images.githubusercontent.com/23200201/187312805-b51f7dc0-68ee-401b-8f06-5ed4995a9fec.png)
-
+<img width="960" alt="Screen Shot 2023-04-06 at 9 13 36 PM" src="https://user-images.githubusercontent.com/23200201/230539788-3a326b44-defd-46a7-bb0a-643f59febbec.png">
 
 
 	
