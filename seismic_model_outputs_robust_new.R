@@ -96,3 +96,6 @@ model_outputs <- straighten(main_fx_all_cb, main_fx_all_gen,
 model_outputs <- model_outputs %>%
   mutate(s.sig = case_when(statistic > 1.96 | statistic < -1.96 ~ "***",
                            statistic <= 1.96 & statistic >= -1.96 ~ "",))
+
+# export outputs ####
+write.csv(model_outputs, paste0(institution,"_all_robust_model_outputs_",current_date,".csv"))
