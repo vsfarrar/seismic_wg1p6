@@ -69,19 +69,12 @@ dat_new <-
   tidyr::replace_na(list(ethniccode_cat = "0", firstgen = "0", international = "0",
                          transfer = "0", lowincomeflag = "0", peer = "0"))
 
-#International Student Processing ####
-
-#1)International students coded conservatively 
+#International students coded conservatively ####
 #for all other demographic variables of interest EXCEPT gender and transfer
 #e.g. ethniccode_cat becomes 0 (white) for all international students
-dat_int <- 
+dat_new <- 
   dat_new %>%
   mutate(across(c(ethniccode_cat, firstgen, lowincomeflag, peer), 
             ~ifelse(international == 1, 0, .)))
 
-#2)International students excluded completely from analysis 
-#removed from sample size (n excluded can be found in the missing_demog file)
-dat_noInt <- 
-  dat_new %>%
-  filter(international != 1)
 
