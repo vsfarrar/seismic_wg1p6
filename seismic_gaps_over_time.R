@@ -5,13 +5,13 @@
 
 demog_gaps_offering <- 
 dat_new %>%
-  group_by(crs_name) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
-  group_by(crs_name,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
-  group_by(crs_name, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
+  group_by(crs_subject) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
+  group_by(crs_subject,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
+  group_by(crs_subject, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
   pivot_longer(cols = c(female,peer,firstgen, lowincomeflag, transfer, international),
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(university, crs_name, crs_term, crs_offering, demographic_var, value) %>%
+  group_by(university, crs_subject, crs_term, crs_offering, demographic_var, value) %>%
   summarise(n_group = n(), #total for that demographic group, by offering.
             n_offering = mean(n_offering),
             n_course = mean(n_course),
@@ -35,7 +35,7 @@ dat_new %>%
   pivot_longer(cols = c(female, peer, firstgen, lowincomeflag, transfer, international),
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(university, crs_name, crs_term, crs_offering, demographic_var, value) %>%
+  group_by(university, crs_subject, crs_term, crs_offering, demographic_var, value) %>%
   summarise(mean_grade = mean(numgrade, na.rm = T),
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T)) %>%
@@ -57,7 +57,7 @@ grade_gpa_diff_ethniccode <-
   pivot_longer(cols = ethniccode_cat,
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(university, crs_name, crs_term, crs_offering, demographic_var, value) %>%
+  group_by(university, crs_subject, crs_term, crs_offering, demographic_var, value) %>%
   summarise(mean_grade = mean(numgrade, na.rm = T),
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T)) %>%
@@ -91,7 +91,7 @@ write.csv(grade_gpa_diff_ethniccode, paste0(institution,"_mean_grade_gpa_diff_of
 
 class_standing_stats <-
   dat_new %>%
-  group_by(university, crs_name, crs_offering, class_standing) %>%
+  group_by(university, crs_subject, crs_offering, class_standing) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T),
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
@@ -125,13 +125,13 @@ write.csv(course_order_summary, paste0(institution,"_course_order_summary_",curr
 
 ns_by_gender <-
 dat_new %>%
-  group_by(crs_name) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
-  group_by(crs_name,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
-  group_by(crs_name, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
+  group_by(crs_subject) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
+  group_by(crs_subject,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
+  group_by(crs_subject, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
   pivot_longer(cols = c(peer,firstgen, lowincomeflag, transfer, international, class_standing),
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(university, crs_name, crs_term, crs_offering, female, demographic_var, value) %>%
+  group_by(university, crs_subject, crs_term, crs_offering, female, demographic_var, value) %>%
   summarise(n_group = n(), #total for that demographic group, by offering.
             n_offering = mean(n_offering),
             n_course = mean(n_course))
@@ -144,13 +144,13 @@ write.csv(ns_by_gender, paste0(institution,"_Ns_by_gender_",current_date,".csv")
 
 gaps_over_years <-
 dat_new %>%
-  group_by(crs_name) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
-  group_by(crs_name,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
-  group_by(crs_name, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
+  group_by(crs_subject) %>% mutate(n_course = n()) %>% ungroup() %>% #course total
+  group_by(crs_subject,crs_term) %>% mutate(n_term = n()) %>% ungroup() %>% #term total
+  group_by(crs_subject, crs_offering) %>% mutate(n_offering = n()) %>% #offering total
   pivot_longer(cols = c(female,peer,firstgen, lowincomeflag, transfer, international),
                names_to = "demographic_var",
                values_to = "value") %>%
-  group_by(university, crs_name, crs_year, demographic_var, value) %>%
+  group_by(university, crs_subject, crs_year, demographic_var, value) %>%
   summarise(mean_grade = mean(numgrade, na.rm = T),
             mean_prior_gpa = mean(cum_prior_gpa, na.rm = T),
             mean_gpao = mean(gpao, na.rm = T)) %>%

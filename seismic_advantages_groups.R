@@ -32,7 +32,7 @@ dat_new <-
 #Advantage Groups across all offerings ####
 advantages_by_offering <- 
   dat_new %>%
-  group_by(university, crs_name, crs_offering, advantage) %>%
+  group_by(university, crs_subject, crs_offering, advantage) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T), 
             se_grade = std.error(numgrade, na.rm = T),
@@ -62,7 +62,7 @@ advantages_by_offering <-
 #Advantage Groups across all offerings ####
 advantages_by_offering_by_transfer <- 
   dat_new %>%
-  group_by(university, crs_name, crs_offering, advantage, transfer) %>%
+  group_by(university, crs_subject, crs_offering, advantage, transfer) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T), 
             se_grade = std.error(numgrade, na.rm = T),
@@ -90,7 +90,7 @@ advantages_by_offering_by_transfer <-
 
 #SAI groups across all offerings ####
 sai_by_offering <- dat_new %>%
-  group_by(university, crs_name, crs_offering, SAI) %>%
+  group_by(university, crs_subject, crs_offering, SAI) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T), 
             se_grade = std.error(numgrade, na.rm = T),
@@ -102,7 +102,7 @@ sai_by_offering <- dat_new %>%
 #SAI averages for plot ####
 sai_avg_plot <-
 dat_new %>%
-  group_by(university, crs_name, SAI) %>%
+  group_by(university, crs_subject, SAI) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T),
             se_grade = std.error(numgrade, na.rm = T),
@@ -114,7 +114,7 @@ dat_new %>%
 #Advantage Groups by Gender ####
 sai_avg_by_gender <-
   dat_new %>%
-  group_by(university, crs_name, female, SAI) %>%
+  group_by(university, crs_subject, female, SAI) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T),
             se_grade = std.error(numgrade, na.rm = T),
@@ -126,7 +126,7 @@ sai_avg_by_gender <-
 #Advantage Groups/SAI by Transfer Status ####
 sai_avg_by_transfer <-
   dat_new %>%
-  group_by(university, crs_name, transfer, SAI) %>%
+  group_by(university, crs_subject, transfer, SAI) %>%
   summarise(n = n(), 
             mean_grade = mean(numgrade, na.rm = T),
             se_grade = std.error(numgrade, na.rm = T),
