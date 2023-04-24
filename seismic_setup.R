@@ -18,7 +18,8 @@ institution <- "UCD"
 
 #use pacman to install and load all packages required
 if (!require("pacman")) install.packages("pacman") #install pacman if not already installed
-pacman::p_load(tidyverse, dplyr,broom, plotrix, broom.mixed, lme4, lmerTest, robustlmm, gmodels)
+pacman::p_load(tidyverse, dplyr,broom, plotrix, broom.mixed, lme4, lmerTest, gmodels, remotes)
+remotes::install_version("robustlmm", version = "3.0-4") #correct version for `rlmRcpp` function
 
 #grab current date using Sys.Date()
 current_date <- as.Date(Sys.Date(), format = "%m/%d/%Y")
