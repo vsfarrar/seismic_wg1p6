@@ -3,6 +3,7 @@
 #setup ####
 #load data
 #currently: international included, coded conservatively
+#updated with new processed data: 10/2023
 
 betas <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_model_estimates_2022-09-30.csv")
 
@@ -14,15 +15,21 @@ source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
 
 all_models_plot <- 
   betas %>% 
-  filter(international_included == 1) %>%
-  mutate(significant = ifelse(is.na(s.sig), 0,1)) %>%
-  mutate(crs_topic = factor(crs_topic, levels = c("Genetics", "CellBio"))) %>%
-  filter(!(variable %in% c("GPAO","EthnicityAsianAsianAmerican", "EthnicityOther"))) %>% 
-  mutate(uni_topic = paste(crs_topic, university, sep = "_"), #crs_topic 1st allows  x axis to be split by course
-         sig_topic = paste(crs_topic, significant, sep = "_")) %>%
+  #FILTER DATA
+  #remove interaction models
+  filter(interaction_mod == 0) %>%
+  #select specific main effects models 
+  filter(!(model %in% c("main_fx_gradeanom_cb", "main_fx_gradeanom_gen"))) %>%
+  #remove random effects and intercepts
+  filter(effect == "fixed" & term != "(Intercept)") %>%
+  #don't plot GPAO as a variable
+  filter(variable != "GPAO") %>%
+  mutate(crs_subject = factor(crs_subject, levels = c("Genetics", "CellBio"))) %>%
+  mutate(uni_topic = paste(crs_subject, university, sep = "_"), #crs_subject 1st allows  x axis to be split by course
+         sig_topic = paste(crs_subject, significant, sep = "_")) %>%
   #create an x-axis placeholder 1-10 , by course within each variable and model
   group_by(variable, GPAO_included) %>%
-  arrange(crs_topic) %>%
+  arrange(crs_subject) %>%
   mutate(x_placeholder = row_number()) %>%
   ggplot(aes(x = x_placeholder, y = estimate, 
              color = as.factor(GPAO_included), shape = sig_topic)) + 
@@ -97,7 +104,7 @@ fv <- splitFacet(all_models_plot)
 figV <- cowplot::plot_grid(fv[[2]] + ylim(-0.7,0.4) + annotate(geom = "text", x = 3, y = -0.7, label = "Genetics") + 
                      annotate(geom = "text", x = 8, y = -0.7, label = "CellBio") +
                      labs(subtitle = "Women"),
-                   fv[[1]] + labs(subtitle = "PEER") + ylim(-0.7,0.4), 
+                   fv[[6]] + labs(subtitle = "PEER") + ylim(-0.7,0.4), 
                    fv[[3]] + labs(subtitle = "FirstGen") + ylim(-0.7,0.4),
                    fv[[4]] + labs(subtitle = "LowSES") + ylim(-0.7,0.4),
                    cowplot::get_legend(fv[[4]]+ theme(legend.position = "right")), 

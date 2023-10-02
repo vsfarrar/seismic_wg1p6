@@ -4,7 +4,7 @@
 #load data
 #currently: international included, coded conservatively
 
-all_dem <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_demographic_gaps2023-03-08.csv")
+all_dem <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_demographic_gaps2023-10-02.csv")
 
 #source functions
 source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
@@ -12,7 +12,7 @@ source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
 #summarise data in one table ####
 dem_percent <- all_dem %>% 
   filter(international_included == 1) %>%
-  group_by(crs_topic,university,demographic_var, value) %>% 
+  group_by(crs_subject,university,demographic_var, value) %>% 
   summarise(n_total = sum(n_group),
             n_course = mean(n_course)) %>% 
   mutate(perc = n_total/n_course *100) #percent for each level
@@ -20,10 +20,11 @@ dem_percent <- all_dem %>%
 #clean up for plot
 dem_percent$university <- factor(dem_percent$university, levels = rev(c("ASU", "IU", "Purdue", "UCD","UM")))
 demog_labels <- c("lowincomeflag" = "LowSES", 
+                  "international"= "International",
                              "female" = "Women", 
                              "firstgen" = "FirstGen", 
                              "transfer" = "Transfer",
-                             "ethniccode_cat" = "PEER")
+                             "peer" = "PEER")
 
 #plot ####
 dem_bars <- 
@@ -36,7 +37,7 @@ dem_percent %>%
   ylim(0,80) + 
   scale_fill_manual(values = deid_colors, labels = deid_labels) + 
   scale_x_discrete(labels = demog_labels) + 
-  facet_wrap(~crs_topic) + 
+  facet_wrap(~crs_subject) + 
   coord_flip() + 
   theme_seismic + 
   theme(axis.text = element_text(color = "black"), 
@@ -60,5 +61,10 @@ x.grob <- textGrob("Percent of all students (%)", gp=gpar(fontsize=14))
 fig1_final <- gridExtra::grid.arrange(arrangeGrob(fig1, bottom = x.grob))
 
 #export plot ####
-ggsave(filename = paste0("fig1_demographic_barpot_", current_date, ".png"), path = "figures/",
+setwd("~/Documents/GitHub/seismic_wg1p6/")
+
+ggsave(filename = paste0("figI_demographic_barpot_", current_date, ".png"), path = "figures/",
        fig1_final, height = 500/96, width = 770/96, units = "in", dpi = 300)
+
+#export data underlying Fig I bar graph
+write.csv(dem_percent, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/figI_underlying-data_", current_date,".csv"))

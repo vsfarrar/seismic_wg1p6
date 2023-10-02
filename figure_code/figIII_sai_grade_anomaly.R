@@ -76,3 +76,7 @@ figIII_final <- gridExtra::grid.arrange(arrangeGrob(figIII, bottom = x.grob2, le
 ggsave(filename = paste0("figIII_sai_grade_anomaly_", current_date, ".png"), path = "figures/",
        figIII_final, height = 430/96, width = 800/96, units = "in", dpi = 300)
 
+
+#export data underlying plot ####
+write.csv(sai_aga, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/figIII_underlying-data_", current_date,".csv"))
+

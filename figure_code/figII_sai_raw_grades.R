@@ -2,8 +2,8 @@
 
 #setup ####
 #load data ####
-sai <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_plot_data_2022-10-04.csv")
-sai_offerings <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_by_offering_2022-10-11.csv")
+sai <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_plot_data_2023-10-02.csv")
+sai_offerings <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/SAI_by_offering_2023-10-02.csv")
 
 #source functions
 source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
@@ -66,6 +66,10 @@ y.grob2 <- textGrob("Final course grade", gp=gpar(fontsize=14), rot = 90)
 fig2_final <- gridExtra::grid.arrange(arrangeGrob(fig2, bottom = x.grob2, left = y.grob2))
 
 #export plot ####
-ggsave(filename = paste0("fig2_sai_raw_grades_", current_date, ".png"), path = "figures/",
+setwd("~/Documents/GitHub/seismic_wg1p6/")
+
+ggsave(filename = paste0("figII_sai_raw_grades_", current_date, ".png"), path = "figures/",
        fig2_final, height = 430/96, width = 800/96, units = "in", dpi = 300)
 
+#export underlying data ####
+write.csv(sai_grades, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/figII_underlying-data_", current_date,".csv"))

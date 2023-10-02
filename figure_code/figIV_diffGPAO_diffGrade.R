@@ -2,7 +2,7 @@
 
 #setup ####
 #load data ####
-all_diff <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_raw_grades_GPA_gaps2022-10-11.csv")
+all_diff <- read.csv("~/Google Drive/My Drive/WG1P6/Processed Data/all_raw_grades_GPA_gaps_2023-10-02.csv")
 
 #source functions
 source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
@@ -11,7 +11,7 @@ source("~/Documents/GitHub/seismic_wg1p6/figure_code/seismic_figures_setup.R")
 
 diff_cellbio <- 
 all_diff %>%
-  filter(demographic_var != "transfer" & crs_topic == "CellBio") %>%
+  filter(demographic_var != "transfer" & crs_subject == "CellBio") %>%
   ggplot(aes(x = -gpao_diff_01, y= -grade_diff_01, fill = university)) + 
   #annotate "bonuses and mismatches" 
   geom_rect(aes(xmin = 0, xmax = Inf, ymin = -Inf, ymax = 0), fill = "#D5D5D5", alpha = 0.1) +
@@ -28,7 +28,7 @@ all_diff %>%
 
 diff_genetics <- 
   all_diff %>%
-  filter(demographic_var != "transfer" & crs_topic == "Genetics") %>%
+  filter(demographic_var != "transfer" & crs_subject == "Genetics") %>%
   ggplot(aes(x = -gpao_diff_01, y= -grade_diff_01, fill = university)) + 
   #annotate "bonuses and mismatches" 
   geom_rect(aes(xmin = 0, xmax = Inf, ymin = -Inf, ymax = 0), fill = "#D5D5D5", alpha = 0.1) +
@@ -52,7 +52,7 @@ diff_tab <-
          grade_bonus1 = ifelse(mean_grade_1 > mean_gpao_1, 1,0),
          grade_penalty_mismatch = ifelse(sign(-gpao_diff_01) == 1 & sign(-grade_diff_01) == -1, 1, 0),
          grade_bonus_mismatch = ifelse(sign(-gpao_diff_01) == -1 & sign(-grade_diff_01) == 1, 1, 0)) %>%
-  group_by(crs_topic, demographic_var) %>%
+  group_by(crs_subject, demographic_var) %>%
   summarise(n = n(),
             avg_grade_anomaly0 = mean(mean_grade_0 - mean_gpao_0),
             avg_grade_anomaly1 = mean(mean_grade_1 - mean_gpao_1),
@@ -129,3 +129,7 @@ figIV_final <- cowplot::plot_grid(figIV,
 #export plot ####
 ggsave(filename = paste0("figIV_diffGPAO_diffGrade_", current_date, ".png"), path = "figures/",
        figIV_final, height = 960/96, width = 735/96, units = "in", dpi = 300, bg= "white")
+
+
+#export data underlying plot ####
+write.csv(diff_tab, file = paste0("~/Google Drive/My Drive/WG1P6/Processed Data/figIV_underlying-data_", current_date,".csv"))
